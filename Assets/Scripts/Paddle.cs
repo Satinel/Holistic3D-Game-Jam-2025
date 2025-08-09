@@ -3,13 +3,7 @@ using UnityEngine;
 public class Paddle : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 10f;
-    [SerializeField] Transform _ball;
     [SerializeField] float _minX = -8.35f, _maxX = 8.35f;
-
-    void Start()
-    {
-        _ball.GetComponent<Rigidbody>().useGravity = true;
-    }
 
     void Update()
     {
@@ -33,9 +27,17 @@ public class Paddle : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.transform == _ball)
+        if(collision.gameObject.TryGetComponent(out Rigidbody rboi))
         {
-            _ball.GetComponent<Rigidbody>().useGravity = false;
+            rboi.useGravity = false;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.TryGetComponent(out Rigidbody2D rboi2D))
+        {
+            rboi2D.gravityScale = 0;
         }
     }
 
