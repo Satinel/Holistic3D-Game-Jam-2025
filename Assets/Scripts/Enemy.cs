@@ -4,7 +4,22 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 5f;
     [SerializeField] float _xMax = 10f, _xMin = -10f;
-    
+
+    void OnEnable()
+    {
+        Paddle.OnPaddleDestroyed += Paddle_OnPaddleDestroyed;
+    }
+
+    void OnDisable()
+    {
+        Paddle.OnPaddleDestroyed -= Paddle_OnPaddleDestroyed;
+    }
+
+    void Paddle_OnPaddleDestroyed()
+    {
+        _moveSpeed = 0;
+    }
+
     void Update()
     {
         transform.Translate(_moveSpeed * Time.deltaTime * Vector3.right);

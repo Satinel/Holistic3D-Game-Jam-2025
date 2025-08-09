@@ -1,12 +1,34 @@
+using System;
 using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    [SerializeField] float _moveSpeed = 10f;
+    public static event Action<float> OnPaddleLaunch;
+    public static event Action OnPaddleDestroyed;
+
+    [SerializeField] float _moveSpeed = 10f, _launchForce = 15f;
     [SerializeField] float _minX = -8.35f, _maxX = 8.35f;
+
+    float _xForce = 0;
 
     void Update()
     {
+        Launch();
+        MoveHorizontal();
+    }
+
+    void Launch()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            OnPaddleLaunch?.Invoke(_xForce);
+        }
+    }
+
+    void MoveHorizontal()
+    {
+        _xForce = 0;
+
         if(Input.GetKey(KeyCode.A))
         {
             transform.Translate(_moveSpeed * Time.deltaTime * Vector3.left);
@@ -14,30 +36,27 @@ public class Paddle : MonoBehaviour
             {
                 transform.position = new(_minX, transform.position.y, transform.position.z);
             }
+            _xForce = -_launchForce;
         }
-        else if(Input.GetKey(KeyCode.D))
+
+        if(Input.GetKey(KeyCode.D))
         {
             transform.Translate(_moveSpeed * Time.deltaTime * Vector3.right);
             if(transform.position.x > _maxX)
             {
                 transform.position = new(_maxX, transform.position.y, transform.position.z);
             }
-        }
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.TryGetComponent(out Rigidbody rboi))
-        {
-            rboi.useGravity = false;
+            _xForce = _launchForce;
         }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent(out Rigidbody2D rboi2D))
+        if(collision.gameObject.CompareTag("Enemy"))
         {
-            rboi2D.gravityScale = 0;
+            Destroy(gameObject);
+            Debug.Log("DEATH!");
+            OnPaddleDestroyed?.Invoke();
         }
     }
 
