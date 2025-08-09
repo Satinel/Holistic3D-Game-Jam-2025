@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 4853643513629264905}
   - component: {fileID: 806157922189441994}
   - component: {fileID: 8605119091001375960}
+  - component: {fileID: 304885064078820627}
   - component: {fileID: 6505373821112953833}
-  - component: {fileID: 1458107282950815192}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.4, z: 0.75}
+  m_LocalScale: {x: 0.75, y: 0.35, z: 0.75}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -88,22 +88,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6505373821112953833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4963802634238949925}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5072f3f1f1c6d584081bcddf52855e04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _moveSpeed: 1.5
-  _xMax: 9
-  _xMin: -9
---- !u!70 &1458107282950815192
+--- !u!70 &304885064078820627
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,5 +123,21 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 1, y: 2}
-  m_Direction: 0
+  m_Size: {x: 1, y: 1.9999999}
+  m_Direction: 1
+--- !u!114 &6505373821112953833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4963802634238949925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5072f3f1f1c6d584081bcddf52855e04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 1.5
+  _rowDistance: 0.65
+  _xMax: 9
+  _xMin: -9

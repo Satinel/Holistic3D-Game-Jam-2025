@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] float _moveSpeed = 5f;
+    [SerializeField] float _moveSpeed = 5f, _rowDistance = 0.5f;
     [SerializeField] float _xMax = 10f, _xMin = -10f;
 
     void OnEnable()
@@ -25,13 +25,17 @@ public class Enemy : MonoBehaviour
         transform.Translate(_moveSpeed * Time.deltaTime * Vector3.right);
         if(transform.position.x >= _xMax && _moveSpeed > 0)
         {
-            transform.position = new(transform.position.x, transform.position.y - 1, transform.position.z);
-            _moveSpeed = -_moveSpeed;
+            DropDownOneRow();
         }
         if(transform.position.x <= _xMin && _moveSpeed < 0)
         {
-            transform.position = new(transform.position.x, transform.position.y - 1, transform.position.z);
-            _moveSpeed = -_moveSpeed;
+            DropDownOneRow();
         }
+    }
+
+    void DropDownOneRow()
+    {
+        transform.position = new(transform.position.x, transform.position.y - _rowDistance, transform.position.z);
+        _moveSpeed = -_moveSpeed;
     }
 }
