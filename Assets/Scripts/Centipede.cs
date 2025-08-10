@@ -9,12 +9,6 @@ public class Centipede : MonoBehaviour
 
     Enemy _head;
     List<Enemy> _segments = new();
-    float _segmentSizeX;
-
-    void Awake()
-    {
-        _segmentSizeX = _enemyPrefab.transform.localScale.x;
-    }
 
     void Start()
     {
@@ -40,7 +34,7 @@ public class Centipede : MonoBehaviour
     {
         for(int i = 0; i < _totalSegments; i++)
         {
-            Enemy newEnemy = Instantiate(_enemyPrefab, new(_spawnPosition.x - (i * _segmentSizeX), _spawnPosition.y), Quaternion.identity, transform);
+            Enemy newEnemy = Instantiate(_enemyPrefab, new(_spawnPosition.x - i, _spawnPosition.y), Quaternion.identity, transform);
             newEnemy.name = $"Segment {i}";
 
             if(_segments.Count == 0)

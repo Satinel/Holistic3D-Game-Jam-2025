@@ -9,15 +9,23 @@ public class Enemy : MonoBehaviour
     [SerializeField] int _hitPoints = 1;
     [SerializeField] float _speedIncrease = 2.5f;
     [SerializeField] float _moveSpeed = 5f, _rowDistance = 0.5f;
-    [SerializeField] float _xMax = 10f, _xMin = -10f;
+    [SerializeField] float _minY, _maxY;
     [SerializeField] bool _isHead;
     [SerializeField] Enemy _head;
     [SerializeField] List<Enemy> _followers;
     [SerializeField] Material _headMaterial;
+    [SerializeField] Obstacle _obstaclePrefab;
 
-    [SerializeField] List<Vector2> _wayPoints = new();
+    // List<Vector2> _wayPoints = new();
 
     bool _isActive = false;
+    Vector2 _direction = Vector2.right;
+    [SerializeField] Rigidbody2D _rigidbody2D;
+
+    void Awake()
+    {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
+    }
 
     void OnEnable()
     {
@@ -41,104 +49,94 @@ public class Enemy : MonoBehaviour
         _moveSpeed = 0;
     }
 
+    // void Update()
+    // {
+
+    //     if(!_isHead)
+    //     {
+    //         BodyMovement();
+    //     }
+    // }
+
     void Update()
     {
         if(!_isActive) { return; }
 
-        transform.Translate(_moveSpeed * Time.deltaTime * Vector3.right);
-        if(_isHead)
+        _rigidbody2D.linearVelocity = _moveSpeed * _direction;
+        
+        if(_rigidbody2D.position.y <= _minY)
         {
-            HeadMovement();
-        }
-        else
-        {
-            BodyMovement();
+            _rigidbody2D.MovePosition(new(_rigidbody2D.position.x, _maxY));
         }
     }
 
-    void HeadMovement()
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        if(transform.position.x >= _xMax && _moveSpeed > 0)
-        {
-            DropDownOneRow();
-        }
-        if(transform.position.x <= _xMin && _moveSpeed < 0)
+        if(collision.gameObject.CompareTag("Obstacle"))
         {
             DropDownOneRow();
         }
     }
 
-    void BodyMovement()
-    {
-        if(_wayPoints.Count <= 0 || _wayPoints[0] == null) { return; }
+    // void BodyMovement()
+    // {
+    //     if(_wayPoints.Count <= 0 || _wayPoints[0] == null) { return; }
 
-        if(transform.position.x >= _wayPoints[0].x && _moveSpeed > 0)
-        {
-            DropDownOneRow();
-            return;
-        }
-        if(transform.position.x <= _wayPoints[0].x && _moveSpeed < 0)
-        {
-            DropDownOneRow();
-            return;
-        }
-    }
+    //     if(Vector2.Distance(transform.position, _wayPoints[0]) <= 0.05f)
+    //     {
+    //         _rigidbody2D.MovePosition(_wayPoints[0]);
+    //         DropDownOneRow();
+    //         return;
+    //     }
+    // }
 
     void DropDownOneRow()
     {
-        if(_isHead)
-        {
-            foreach(Enemy follower in _followers)
-            {
-                follower.AddToWaypoints(transform.position);
-            }
-        }
-        else
-        {
-            _wayPoints.RemoveAt(0);
-        }
-        transform.position = new(transform.position.x, transform.position.y - _rowDistance, transform.position.z);
-        _moveSpeed = -_moveSpeed;
+        // if(_isHead)
+        // {
+        //     foreach(Enemy follower in _followers)
+        //     {
+        //         follower.AddToWaypoints(transform.position);
+        //     }
+        // }
+        // else
+        // {
+        //     _wayPoints.RemoveAt(0);
+        // }
+        _rigidbody2D.MovePosition(new(transform.position.x, transform.position.y - _rowDistance));
+        _direction = -_direction;
     }
 
-    public void AddToWaypoints(Vector2 newWaypoint)
-    {
-        _wayPoints.Add(newWaypoint);
-    }
+    // public void AddToWaypoints(Vector2 newWaypoint)
+    // {
+    //     _wayPoints.Add(newWaypoint);
+    // }
 
-    public void ClearWaypoints()
-    {
-        _wayPoints = new();
-    }
+    // public void ClearWaypoints()
+    // {
+    //     _wayPoints = new();
+    // }
 
     public void MakeHead()
     {
         GetComponentInChildren<MeshRenderer>().material = _headMaterial;
 
-        ClearWaypoints();
+        // ClearWaypoints();
         IncreaseSpeed(_speedIncrease);
 
         foreach(Enemy follower in _followers)
         {
-            follower.ClearWaypoints();
+            // follower.ClearWaypoints();
             follower.SetHead(this);
             follower.IncreaseSpeed(_speedIncrease);
         }
 
         _isHead = true;
-        DropDownOneRow();
     }
 
     public void IncreaseSpeed(float amount)
     {
-        if(_moveSpeed > 0)
-        {
-            _moveSpeed += amount;
-        }
-        else
-        {
-            _moveSpeed -= amount;
-        }
+        _moveSpeed += amount;
     }
 
     public void SetHead(Enemy newHead)
@@ -200,6 +198,7 @@ public class Enemy : MonoBehaviour
     void HandleDeath()
     {
         OnAnyEnemyDestroyed?.Invoke(this);
+        Instantiate(_obstaclePrefab, transform.position, Quaternion.identity);
 
         if(_followers.Count <= 0 || _followers[0] == null)
         {
