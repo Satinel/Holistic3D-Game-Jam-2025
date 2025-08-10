@@ -137,7 +137,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5072f3f1f1c6d584081bcddf52855e04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _hitPoints: 1
+  _speedIncrease: 0.2
   _moveSpeed: 1.5
   _rowDistance: 0.65
   _xMax: 9
   _xMin: -9
+  _isHead: 0
+  _head: {fileID: 0}
+  _followers: []
+  _headMaterial: {fileID: 2100000, guid: 158498a35769c784ab6025fb582d560b, type: 2}
+  _wayPoints: []

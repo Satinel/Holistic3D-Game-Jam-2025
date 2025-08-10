@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    [SerializeField] int _damage = 1;
     [SerializeField] float _yForce = 10f;
 
     CircleCollider2D _circleCollider2D;
@@ -43,19 +44,12 @@ public class Ball : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.CompareTag("Enemy"))
-        {
-            Destroy(collision.gameObject, 0.05f);
-        }
-    }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Enemy"))
+        collision.gameObject.TryGetComponent(out Enemy enemy);
+        if(enemy)
         {
-            Destroy(collision.gameObject, 0.05f);
+            enemy.TakeDamage(_damage);
         }
     }
 }
