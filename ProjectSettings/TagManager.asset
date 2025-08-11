@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Obstacle
   - Dirt
+  - Ball
   layers:
   - Default
   - TransparentFX

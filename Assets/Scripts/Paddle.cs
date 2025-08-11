@@ -5,14 +5,13 @@ public class Paddle : MonoBehaviour
 {
     public static event Action OnPaddleDestroyed;
 
-    [SerializeField] float _moveSpeed = 10f, _launchForce = 15f;
+    [SerializeField] float _moveSpeed = 10f;
     [SerializeField] float _minX = -8.35f, _maxX = 8.35f;
 
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
     [SerializeField] GameObject _fakeBall;
 
-    float _xForce = 0;
     bool _canLaunch = true;
     Vector2 _direction = Vector2.zero;
     Rigidbody2D _rigidbody2D;
@@ -44,14 +43,11 @@ public class Paddle : MonoBehaviour
 
     void GetInput()
     {
-        _xForce = 0;
         _direction = Vector2.zero;
 
         if(Input.GetKey(KeyCode.A))
         {
             _direction = Vector2.left;
-
-            _xForce = -_launchForce;
         }
 
         if(Input.GetKey(KeyCode.D))
@@ -59,12 +55,10 @@ public class Paddle : MonoBehaviour
             if(_direction == Vector2.zero)
             {
                 _direction = Vector2.right;
-                _xForce = _launchForce;
             }
             else
             {
                 _direction = Vector2.zero;
-                _xForce = 0;
             }
         }
 
@@ -96,7 +90,7 @@ public class Paddle : MonoBehaviour
         _canLaunch = false;
         _fakeBall.SetActive(false);
         Ball newBall = Instantiate(_ballPrefab, _ballSpawnPoint.position, Quaternion.identity);
-        newBall.Launch(_xForce);
+        newBall.Launch();
     }
 
 

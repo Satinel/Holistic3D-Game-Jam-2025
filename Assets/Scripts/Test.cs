@@ -42,7 +42,7 @@ public class Test : MonoBehaviour
             if(!_activeBall)
             {
                 _activeBall = Instantiate(_ballPrefab, _ballSpawnPoint.position, Quaternion.identity);
-                _activeBall.Launch(_ballForce);
+                _activeBall.Launch();
             }
         }
         

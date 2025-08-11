@@ -29,13 +29,19 @@ public class Ball : MonoBehaviour
         Paddle.OnPaddleDestroyed -= Paddle_OnPaddleDestroyed;
     }
 
-    public void Launch(float xForce)
+    public void Launch()
     {
         if(_hasLaunched) { return; }
 
         _hasLaunched = true;
 
-        _rigidbody2D.linearVelocity = new Vector2(xForce, 1f) * _moveSpeed;
+        float randomAngle = 0.25f;
+        if(UnityEngine.Random.Range(1, 3) == 1)
+        {
+            randomAngle = -randomAngle;
+        }
+
+        _rigidbody2D.linearVelocity = (transform.up + (transform.right * randomAngle)).normalized * _moveSpeed;
 
         Destroy(gameObject, _lifeTime);
     }
