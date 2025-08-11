@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Obstacle
+  - Dirt
   layers:
   - Default
   - TransparentFX

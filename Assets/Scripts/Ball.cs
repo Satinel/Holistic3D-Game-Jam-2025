@@ -7,6 +7,8 @@ public class Ball : MonoBehaviour
 
     [SerializeField] int _damage = 1;
     [SerializeField] float _moveSpeed = 10f;
+    [SerializeField] bool _limitSpeed = true;
+    [SerializeField] float _lifeTime = 10f;
 
     Rigidbody2D _rigidbody2D;
 
@@ -34,6 +36,8 @@ public class Ball : MonoBehaviour
         _hasLaunched = true;
 
         _rigidbody2D.linearVelocity = new Vector2(xForce, 1f) * _moveSpeed;
+
+        Destroy(gameObject, _lifeTime);
     }
 
     void Paddle_OnPaddleDestroyed()
@@ -43,8 +47,11 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        // _rigidbody2D.linearVelocity = Vector2.Reflect(_rigidbody2D.linearVelocity, collision.contacts[0].normal).normalized * _moveSpeed; // https://www.youtube.com/watch?v=Vr-ojd4Y2a4
-        _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _moveSpeed; // Above 'works' for kinematic rigidbody, this works for dynamic rigidbody
+        if(_limitSpeed)
+        {
+            // _rigidbody2D.linearVelocity = Vector2.Reflect(_rigidbody2D.linearVelocity, collision.contacts[0].normal).normalized * _moveSpeed; // https://www.youtube.com/watch?v=Vr-ojd4Y2a4
+            _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _moveSpeed; // Above 'works' for kinematic rigidbody, this works for dynamic rigidbody
+        }
 
         collision.gameObject.TryGetComponent(out Enemy enemy);
         if(enemy)
