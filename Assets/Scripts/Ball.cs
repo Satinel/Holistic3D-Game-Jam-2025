@@ -1,7 +1,10 @@
 using UnityEngine;
+using System;
 
 public class Ball : MonoBehaviour
 {
+    public static event Action OnBallDestroyed;
+
     [SerializeField] int _damage = 1;
     [SerializeField] float _moveSpeed = 10f;
 
@@ -40,7 +43,8 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        _rigidbody2D.linearVelocity = Vector2.Reflect(_rigidbody2D.linearVelocity, collision.contacts[0].normal).normalized * _moveSpeed; // https://www.youtube.com/watch?v=Vr-ojd4Y2a4
+        // _rigidbody2D.linearVelocity = Vector2.Reflect(_rigidbody2D.linearVelocity, collision.contacts[0].normal).normalized * _moveSpeed; // https://www.youtube.com/watch?v=Vr-ojd4Y2a4
+        _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _moveSpeed; // Above 'works' for kinematic rigidbody, this works for dynamic rigidbody
 
         collision.gameObject.TryGetComponent(out Enemy enemy);
         if(enemy)
@@ -54,5 +58,15 @@ public class Ball : MonoBehaviour
             obstacle.TakeDamage(_damage);
         }
 
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Respawn"))
+        {
+            OnBallDestroyed?.Invoke();
+
+            Destroy(gameObject);
+        }
     }
 }

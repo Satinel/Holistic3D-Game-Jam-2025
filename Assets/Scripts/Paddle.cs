@@ -13,12 +13,23 @@ public class Paddle : MonoBehaviour
     [SerializeField] GameObject _fakeBall;
 
     float _xForce = 0;
+    bool _canLaunch = true;
     Vector2 _direction = Vector2.zero;
     Rigidbody2D _rigidbody2D;
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+    }
+
+    void OnEnable()
+    {
+        Ball.OnBallDestroyed += Ball_OnBallDestroyed;
+    }
+
+    void OnDisable()
+    {
+        Ball.OnBallDestroyed -= Ball_OnBallDestroyed;
     }
 
     void Update()
@@ -80,6 +91,9 @@ public class Paddle : MonoBehaviour
 
     void SpawnBall()
     {
+        if(!_canLaunch) { return; }
+
+        _canLaunch = false;
         _fakeBall.SetActive(false);
         Ball newBall = Instantiate(_ballPrefab, _ballSpawnPoint.position, Quaternion.identity);
         newBall.Launch(_xForce);
@@ -95,5 +109,11 @@ public class Paddle : MonoBehaviour
             Debug.Log("DEATH!");
             OnPaddleDestroyed?.Invoke();
         }
+    }
+
+    void Ball_OnBallDestroyed()
+    {
+        _fakeBall.SetActive(true);
+        _canLaunch = true;
     }
 }
