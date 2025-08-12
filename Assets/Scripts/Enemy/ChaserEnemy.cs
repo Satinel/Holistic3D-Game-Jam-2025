@@ -61,7 +61,6 @@ public class ChaserEnemy : MonoBehaviour
 
     void Player_OnWaypointSet(Vector2 _)
     {
-        Debug.Log("New Waypoint");
         if(_currentTarget == _player.transform)
         {
             _waypointIndex = _waypointManager.Waypoints.Count - 1;
