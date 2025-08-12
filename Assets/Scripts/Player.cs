@@ -1,11 +1,13 @@
 using UnityEngine;
+using System;
 
 public class Player : MonoBehaviour
 {
+    public static event Action<Vector2> OnWaypointSet;
+
     [SerializeField] float _moveSpeed = 3f, _spawnRadius = 0.8f;
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
-    [SerializeField] float _ballForce;
     [SerializeField] float _minX, _maxX, _minY, _maxY;
 
     Vector2 _direction = Vector2.right;
@@ -17,8 +19,15 @@ public class Player : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
+    void Start()
+    {
+        OnWaypointSet?.Invoke(transform.position);
+    }
+
     void Update()
     {
+        Vector2 previousDirection = _direction;
+
         _direction = Vector2.zero;
 
         if(Input.GetKey(KeyCode.W))
@@ -62,6 +71,11 @@ public class Player : MonoBehaviour
                     _direction.x = -1;
                 }
             }
+        }
+
+        if(_direction != previousDirection)
+        {
+            OnWaypointSet?.Invoke(transform.position);
         }
 
         _rigidbody2D.linearVelocity = _moveSpeed * _direction;

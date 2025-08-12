@@ -59,10 +59,10 @@ public class Ball : MonoBehaviour
             _rigidbody2D.linearVelocity = _rigidbody2D.linearVelocity.normalized * _moveSpeed; // Above 'works' for kinematic rigidbody, this works for dynamic rigidbody
         }
 
-        collision.gameObject.TryGetComponent(out Enemy enemy);
-        if(enemy)
+        collision.gameObject.TryGetComponent(out EnemyHealth enemyHealth);
+        if(enemyHealth)
         {
-            enemy.TakeDamage(_damage);
+            enemyHealth.TakeDamage(_damage);
         }
 
         collision.gameObject.TryGetComponent(out Obstacle obstacle);
