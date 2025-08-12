@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7963438620721373342}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 9, y: 10, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5484217990955134905}
@@ -167,12 +167,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _moveSpeed: 3
+  _spawnRadius: 0.8
   _ballPrefab: {fileID: 5721180322804011408, guid: 44f011a5601e11c44ad9e882750745f5, type: 3}
   _ballSpawnPoint: {fileID: 5484217990955134905}
   _ballForce: 5
-  _minX: 0.375
-  _maxX: 18.375
-  _minY: 0.375
+  _minX: 0.1875
+  _maxX: 18.5625
+  _minY: 0.1875
   _maxY: 10.375
 --- !u!1 &653166004469174322
 GameObject:
@@ -286,7 +287,7 @@ Transform:
   m_GameObject: {fileID: 3697446011512409994}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.65, y: 0, z: 0}
+  m_LocalPosition: {x: 0.8, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

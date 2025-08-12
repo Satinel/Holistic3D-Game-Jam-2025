@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float _moveSpeed = 3f;
+    [SerializeField] float _moveSpeed = 3f, _spawnRadius = 0.8f;
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
     [SerializeField] float _ballForce;
@@ -87,19 +87,19 @@ public class Player : MonoBehaviour
 
         if(_direction.x < 0)
         {
-            posX = -0.65f;
+            posX = -_spawnRadius;
         }
         if(_direction.x > 0)
         {
-            posX = 0.65f;
+            posX = _spawnRadius;
         }
         if(_direction.y < 0)
         {
-            posY = -0.65f;
+            posY = -_spawnRadius;
         }
         if(_direction.y > 0)
         {
-            posY = 0.65f;
+            posY = _spawnRadius;
         }
 
         _ballSpawnPoint.localPosition = new(posX, posY);
