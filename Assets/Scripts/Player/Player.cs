@@ -132,5 +132,9 @@ public class Player : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
+        if(collision.gameObject.CompareTag("Enemy"))
+        {
+            Destroy(gameObject); // TODO Handle player death better and respawn the player and so on
+        }
     }
 }

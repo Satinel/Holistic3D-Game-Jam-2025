@@ -21,6 +21,6 @@ public class EnemyHealth : MonoBehaviour
 
     void HandleDeath()
     {
-        Destroy(gameObject); // TODO At least play a sound or something!
+        Destroy(gameObject); // TODO At least play a sound or something! Add to score and so on
     }
 }
