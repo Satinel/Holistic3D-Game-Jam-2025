@@ -6,6 +6,7 @@ public class CentipedeSpawner : MonoBehaviour
     [SerializeField] int _totalSegments;
     [SerializeField] Vector2 _spawnPosition = new();
     [SerializeField] Centipede _centipedePrefab;
+    [SerializeField] float _segmentScale = 1;
 
     Player _player;
     WaypointManager _waypointManager;
@@ -27,7 +28,7 @@ public class CentipedeSpawner : MonoBehaviour
     {
         for(int i = 0; i < _totalSegments; i++)
         {
-            Centipede newSegment = Instantiate(_centipedePrefab, new(_spawnPosition.x, _spawnPosition.y), Quaternion.identity, transform);
+            Centipede newSegment = Instantiate(_centipedePrefab, new(_spawnPosition.x - i * _segmentScale, _spawnPosition.y), Quaternion.identity, transform);
             newSegment.name = $"Segment {i}";
 
             if(i == 0)

@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.Collections.Generic;
 
 public class Centipede : MonoBehaviour
 {
@@ -52,38 +50,31 @@ public class Centipede : MonoBehaviour
             }
         }
 
-        if(_isHead)
+
+        transform.right = _currentTarget.position - transform.position;
+
+        _rigidbody2D.linearVelocity = transform.right * _moveSpeed;
+
+        if(Vector2.Distance(transform.position, _currentTarget.position) <= _minDistance)
         {
-            transform.right = _currentTarget.position - transform.position;
-
-            _rigidbody2D.linearVelocity = transform.right * _moveSpeed;
-
-            if(Vector2.Distance(transform.position, _currentTarget.position) <= _minDistance)
-            {
-                _currentTarget = null;
-                _waypointIndex++;
-            }
+            _currentTarget = null;
+            _waypointIndex++;
         }
-        else
-        {
-            transform.right = _leader.transform.position - transform.position;
 
-            if(Vector2.Distance(transform.position, _leader.transform.position) >= _followDistance)
-            {
-                _rigidbody2D.linearVelocity = transform.right * _moveSpeed;
-            }
-            else
-            {
-                _rigidbody2D.linearVelocity = Vector2.zero;
-            }
-        }
+        // if(!_isHead && _leader)
+        // {
+        //     if(Vector2.Distance(transform.position, _leader.transform.position) > _followDistance)
+        //     {
+        //         _rigidbody2D.linearVelocity = transform.right * (_moveSpeed + 1);
+        //     }
+        // }
     }
 
     void EnemyHealth_OnAnyEnemyDestroyed(EnemyHealth enemyHealth)
     {
         if(enemyHealth == GetComponent<EnemyHealth>())
         {
-            _follower.SetWaypoints(_waypointIndex);
+            Instantiate(_obstaclePrefab, transform.position, Quaternion.identity);
         }
         if(enemyHealth == _leader)
         {
@@ -93,8 +84,6 @@ public class Centipede : MonoBehaviour
 
     void Player_OnWaypointSet(Vector2 _)
     {
-        if(!_isHead) { return; }
-
         if(_currentTarget == _player.transform)
         {
             Invoke(nameof(UpdateWayPoints), 0.01f);
@@ -127,10 +116,5 @@ public class Centipede : MonoBehaviour
     public void SetLeader(EnemyHealth leader)
     {
         _leader = leader;
-    }
-
-    public void SetWaypoints(int index)
-    {
-        _currentTarget = _waypointManager.Waypoints[index].transform;
     }
 }
