@@ -190,7 +190,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5418009760600981175, guid: 86b0e2e1c392b2a46b5c74630e40cf2c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.25
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5418009760600981175, guid: 86b0e2e1c392b2a46b5c74630e40cf2c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -622,6 +622,10 @@ PrefabInstance:
     - target: {fileID: 8918447881519725169, guid: a4b143ca8c597ec4c8b1e4403080aa60, type: 3}
       propertyPath: m_Name
       value: Rock Multi (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918447881519725169, guid: a4b143ca8c597ec4c8b1e4403080aa60, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
