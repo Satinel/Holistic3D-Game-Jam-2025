@@ -12,12 +12,14 @@ public class Centipede : MonoBehaviour
 
     [SerializeField] Material _headMaterial, _bodyMaterial;
     [SerializeField] Obstacle _obstaclePrefab;
-    [SerializeField] Centipede _centipedePrefab;
     [SerializeField] Transform _spawnPoint;
     EnemyHealth _leader;
+    Centipede _centipedePrefab;
     Centipede _follower;
     bool _isHead;
     public EnemyHealth EnemyHealth { get; private set; }
+
+    readonly string LEMMING_KILLER_LAYER = "LemmingKiller";
 
     void Awake()
     {
@@ -98,8 +100,9 @@ public class Centipede : MonoBehaviour
         _currentTarget = _waypointManager.Waypoints[_waypointIndex].transform;
     }
 
-    public void Setup(Player player, WaypointManager waypointManager, int waypointIndex)
+    public void Setup(Centipede prefab, Player player, WaypointManager waypointManager, int waypointIndex)
     {
+        _centipedePrefab = prefab;
         _player = player;
         _waypointManager = waypointManager;
         _waypointIndex = waypointIndex;
@@ -110,6 +113,8 @@ public class Centipede : MonoBehaviour
         _leader = null;
         _isHead = true;
         GetComponentInChildren<MeshRenderer>().material = _headMaterial;
+        int layerIdentifier = LayerMask.NameToLayer(LEMMING_KILLER_LAYER);
+        gameObject.layer = layerIdentifier;
     }
 
     public void SetFollower(Centipede follower)
@@ -131,7 +136,7 @@ public class Centipede : MonoBehaviour
             Centipede newSegment = Instantiate(_centipedePrefab, transform.parent);
 
             newSegment.SetLeader(GetComponent<EnemyHealth>());
-            newSegment.Setup(_player, _waypointManager, _waypointIndex);
+            newSegment.Setup(_centipedePrefab, _player, _waypointManager, _waypointIndex);
 
             SetFollower(newSegment);
         }
