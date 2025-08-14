@@ -1,7 +1,10 @@
+using System;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
+    public static event Action<EnemyHealth> OnAnyEnemyDestroyed;
+
     [SerializeField] int _maxHealth = 1;
     int _currentHealth;
 
@@ -21,6 +24,8 @@ public class EnemyHealth : MonoBehaviour
 
     void HandleDeath()
     {
-        Destroy(gameObject); // TODO At least play a sound or something! Add to score and so on
+        OnAnyEnemyDestroyed?.Invoke(this);
+
+        gameObject.SetActive(false); // TODO At least play a sound or something! Add to score and so on
     }
 }

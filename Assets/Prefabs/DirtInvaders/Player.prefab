@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 15
   m_Sprite: {fileID: -712631045867808456, guid: b670ab75dde984907b8570040daa08c5, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
@@ -169,9 +169,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _spawnRadius: 0.8
   _ballPrefab: {fileID: 5721180322804011408, guid: 44f011a5601e11c44ad9e882750745f5, type: 3}
-  _wayPoint: {fileID: 6857250247925967291, guid: b5a5edcf7e391794383c52fe20e62f2f, type: 3}
   _ballSpawnPoint: {fileID: 5484217990955134905}
-  _ballForce: 5
   _minX: 0.1875
   _maxX: 18.5625
   _minY: 0.1875
@@ -251,7 +249,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 16
   m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_Color: {r: 1, g: 0.76711166, b: 0, a: 1}
   m_FlipX: 0

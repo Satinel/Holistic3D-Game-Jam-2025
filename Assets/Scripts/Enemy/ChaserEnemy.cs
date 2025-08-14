@@ -63,8 +63,13 @@ public class ChaserEnemy : MonoBehaviour
     {
         if(_currentTarget == _player.transform)
         {
+            Invoke(nameof(UpdateWayPoints), 0.01f);
+        }
+    }
+
+    void UpdateWayPoints()
+    {
             _waypointIndex = _waypointManager.Waypoints.Count - 1;
             _currentTarget = _waypointManager.Waypoints[_waypointIndex].transform;
-        }
     }
 }
