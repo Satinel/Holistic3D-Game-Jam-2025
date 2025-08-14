@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Centipede : MonoBehaviour
 {
-    [SerializeField] float _moveSpeed = 5f, _minDistance = 0.1f, _followDistance = 1f;
+    [SerializeField] float _moveSpeed = 5f, _minDistance = 0.1f;
 
     int _waypointIndex = 0;
     Rigidbody2D _rigidbody2D;
@@ -10,15 +10,19 @@ public class Centipede : MonoBehaviour
     Player _player;
     WaypointManager _waypointManager;
 
-    [SerializeField] Material _headMaterial;
+    [SerializeField] Material _headMaterial, _bodyMaterial;
     [SerializeField] Obstacle _obstaclePrefab;
-    bool _isHead;
+    [SerializeField] Centipede _centipedePrefab;
+    [SerializeField] Transform _spawnPoint;
     EnemyHealth _leader;
     Centipede _follower;
+    bool _isHead;
+    public EnemyHealth EnemyHealth { get; private set; }
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        EnemyHealth = GetComponent<EnemyHealth>();
     }
 
     void OnEnable()
@@ -60,25 +64,23 @@ public class Centipede : MonoBehaviour
             _currentTarget = null;
             _waypointIndex++;
         }
-
-        // if(!_isHead && _leader)
-        // {
-        //     if(Vector2.Distance(transform.position, _leader.transform.position) > _followDistance)
-        //     {
-        //         _rigidbody2D.linearVelocity = transform.right * (_moveSpeed + 1);
-        //     }
-        // }
     }
 
     void EnemyHealth_OnAnyEnemyDestroyed(EnemyHealth enemyHealth)
     {
-        if(enemyHealth == GetComponent<EnemyHealth>())
+        if(enemyHealth == EnemyHealth)
         {
             Instantiate(_obstaclePrefab, transform.position, Quaternion.identity);
+            _follower = null;
+            _leader = null;
         }
-        if(enemyHealth == _leader)
+        else if(enemyHealth == _leader)
         {
             SetAsHead();
+        }
+        else if(_follower && enemyHealth == _follower.EnemyHealth)
+        {
+            _follower = null;
         }
     }
 
@@ -96,14 +98,16 @@ public class Centipede : MonoBehaviour
         _currentTarget = _waypointManager.Waypoints[_waypointIndex].transform;
     }
 
-    public void Setup(Player player, WaypointManager waypointManager)
+    public void Setup(Player player, WaypointManager waypointManager, int waypointIndex)
     {
         _player = player;
         _waypointManager = waypointManager;
+        _waypointIndex = waypointIndex;
     }
 
     public void SetAsHead()
     {
+        _leader = null;
         _isHead = true;
         GetComponentInChildren<MeshRenderer>().material = _headMaterial;
     }
@@ -111,10 +115,38 @@ public class Centipede : MonoBehaviour
     public void SetFollower(Centipede follower)
     {
         _follower = follower;
+        _follower.transform.position = _spawnPoint.position;
+        _follower.GetComponentInChildren<MeshRenderer>().material = _bodyMaterial;
     }
 
     public void SetLeader(EnemyHealth leader)
     {
         _leader = leader;
+    }
+
+    public void Grow()
+    {
+        if(!_follower)
+        {
+            Centipede newSegment = Instantiate(_centipedePrefab, transform.parent);
+
+            newSegment.SetLeader(GetComponent<EnemyHealth>());
+            newSegment.Setup(_player, _waypointManager, _waypointIndex);
+
+            SetFollower(newSegment);
+        }
+        else
+        {
+            _follower.Grow();
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(_isHead && collision.gameObject.GetComponent<Lemming>())
+        {
+            Destroy(collision.gameObject);
+            Grow();
+        }
     }
 }

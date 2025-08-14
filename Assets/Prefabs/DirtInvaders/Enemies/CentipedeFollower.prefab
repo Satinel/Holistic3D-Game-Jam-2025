@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 2139227636251307193}
   - component: {fileID: -586833526176411328}
   m_Layer: 9
-  m_Name: Centipede
+  m_Name: CentipedeFollower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -234,7 +234,7 @@ MonoBehaviour:
   _headMaterial: {fileID: 2100000, guid: 158498a35769c784ab6025fb582d560b, type: 2}
   _bodyMaterial: {fileID: 2100000, guid: fdfec7099179d7b46abfdd5868ca6eb0, type: 2}
   _obstaclePrefab: {fileID: 4274688033422964287, guid: baa48571b282ce6478212179ce75b490, type: 3}
-  _centipedePrefab: {fileID: 2139227636251307193, guid: 95b7af3b16829fa42b0b6114a4d26ec4, type: 3}
+  _centipedePrefab: {fileID: 2139227636251307193, guid: 9641dd8f72b0c8a45980db6ebc487b95, type: 3}
   _spawnPoint: {fileID: 7454050532925147259}
 --- !u!114 &-586833526176411328
 MonoBehaviour:

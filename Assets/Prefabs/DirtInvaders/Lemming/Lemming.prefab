@@ -156,7 +156,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 456
+    m_Bits: 968
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 55

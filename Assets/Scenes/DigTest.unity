@@ -542,9 +542,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveSpeed: 5
   _minDistance: 0.1
-  _followDistance: 1
   _headMaterial: {fileID: 0}
+  _bodyMaterial: {fileID: 0}
   _obstaclePrefab: {fileID: 0}
+  _centipedePrefab: {fileID: 0}
+  _spawnPoint: {fileID: 0}
 --- !u!1 &751799793
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,7 +916,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3720686442717575370, guid: caa415693ce8def4cac1b391420c8192, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
