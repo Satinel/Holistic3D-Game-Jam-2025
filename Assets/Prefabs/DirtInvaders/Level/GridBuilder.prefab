@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 2963359116859766566, guid: d3b01c74ea17aa148aecb0fe43503c77, type: 3}
   _gridSizeX: 76
-  _gridSizeY: 40
+  _gridSizeY: 39
   _tileSize: 0.25
   _colors:
   - {r: 0.5921569, g: 0, b: 0, a: 1}

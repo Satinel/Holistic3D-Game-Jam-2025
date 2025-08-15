@@ -7,6 +7,7 @@ public class LemmingSpawner : MonoBehaviour
     [SerializeField] int _totalLemmings = 25;
     [SerializeField] float _spawnDelay = 1.3f;
     [SerializeField] TextMeshProUGUI _text;
+    [SerializeField] Transform _spawnPoint;
 
     int _spawnCount = 0;
     float _timer = 0;
@@ -25,7 +26,7 @@ public class LemmingSpawner : MonoBehaviour
         if(_timer >= _spawnDelay)
         {
             _timer = 0;
-            Lemming newLemming = Instantiate(_lemmingPrefab, transform.position, Quaternion.identity, transform);
+            Lemming newLemming = Instantiate(_lemmingPrefab, _spawnPoint.position, Quaternion.identity, transform);
             newLemming.name = $"Lemming {_spawnCount}";
             _spawnCount++;
             _text.text = $"{_totalLemmings - _spawnCount}";

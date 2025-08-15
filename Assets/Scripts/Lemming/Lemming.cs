@@ -1,7 +1,12 @@
 using UnityEngine;
+using System;
 
 public class Lemming : MonoBehaviour
 {
+    public static event Action OnAnyLemmingSpawned;
+    public static event Action OnAnyLemmingKilled;
+    public static event Action OnAnyLemmingEscaped;
+
     [SerializeField] float _moveSpeed = 1f, _jumpSpeed = 1.25f;
     [SerializeField] float _fallingCheckThreshold = -0.1f;
     [SerializeField] float _blockedCheckDelay = 0.25f;
@@ -21,6 +26,7 @@ public class Lemming : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _previousPosition = transform.position;
+        OnAnyLemmingSpawned?.Invoke(); // TODO Update UI displaying active lemmings probably!
     }
 
     void Start()
@@ -104,20 +110,32 @@ public class Lemming : MonoBehaviour
         }
     }
 
-    void DrawBox(Vector3 center, Vector2 size, float angle, Color color)
+    public void Rescue()
     {
-        Vector2 halfSize = size / 2f;
-        Quaternion rotation = Quaternion.Euler(0, 0, angle);
-
-        Vector2[] corners = new Vector2[4];
-        corners[0] = (Vector3)center + rotation * new Vector2(-halfSize.x, -halfSize.y); // Bottom Left
-        corners[1] = (Vector3)center + rotation * new Vector2(-halfSize.x, halfSize.y);  // Top Left
-        corners[2] = (Vector3)center + rotation * new Vector2(halfSize.x, halfSize.y);   // Top Right
-        corners[3] = (Vector3)center + rotation * new Vector2(halfSize.x, -halfSize.y);  // Bottom Right
-
-        Debug.DrawLine(corners[0], corners[1], color);
-        Debug.DrawLine(corners[1], corners[2], color);
-        Debug.DrawLine(corners[2], corners[3], color);
-        Debug.DrawLine(corners[3], corners[0], color);
+        OnAnyLemmingEscaped?.Invoke(); // TODO Increase score, check if all Lemmings accounted for, play sfx/vfx, etc.
+        Destroy(gameObject);
     }
+
+    public void Kill()
+    {
+        OnAnyLemmingKilled?.Invoke(); // TODO Update UI displaying number of active/remaining Lemmings (assuming such a thing ever exists) and check if all Lemmings accounted for
+        Destroy(gameObject);
+    }
+
+    // void DrawBox(Vector3 center, Vector2 size, float angle, Color color)
+    // {
+    //     Vector2 halfSize = size / 2f;
+    //     Quaternion rotation = Quaternion.Euler(0, 0, angle);
+
+    //     Vector2[] corners = new Vector2[4];
+    //     corners[0] = (Vector3)center + rotation * new Vector2(-halfSize.x, -halfSize.y); // Bottom Left
+    //     corners[1] = (Vector3)center + rotation * new Vector2(-halfSize.x, halfSize.y);  // Top Left
+    //     corners[2] = (Vector3)center + rotation * new Vector2(halfSize.x, halfSize.y);   // Top Right
+    //     corners[3] = (Vector3)center + rotation * new Vector2(halfSize.x, -halfSize.y);  // Bottom Right
+
+    //     Debug.DrawLine(corners[0], corners[1], color);
+    //     Debug.DrawLine(corners[1], corners[2], color);
+    //     Debug.DrawLine(corners[2], corners[3], color);
+    //     Debug.DrawLine(corners[3], corners[0], color);
+    // }
 }

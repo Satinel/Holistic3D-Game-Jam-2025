@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1713942371464196809
 Transform:
   m_ObjectHideFlags: 0
@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _totalSegments: 6
-  _spawnPosition: {x: 0, y: 0}
+  _spawnPosition: {x: 2, y: 10.15}
   _centipedePrefab: {fileID: 2139227636251307193, guid: 9641dd8f72b0c8a45980db6ebc487b95, type: 3}

@@ -8,15 +8,16 @@ public class Player : MonoBehaviour
     [SerializeField] float _moveSpeed = 3f, _spawnRadius = 0.8f;
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
-    [SerializeField] float _minX, _maxX, _minY, _maxY;
 
     Vector2 _direction = Vector2.right;
+    Vector2 _spawnPosition = new();
     Rigidbody2D _rigidbody2D;
     Ball _activeBall;
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _spawnPosition = transform.position;
     }
 
     void Start()
@@ -32,10 +33,7 @@ public class Player : MonoBehaviour
 
         if(Input.GetKey(KeyCode.W))
         {
-            if(transform.position.y < _maxY)
-            {
-                _direction.y = 1;
-            }
+            _direction.y = 1;
         }
         if(Input.GetKey(KeyCode.S))
         {
@@ -45,18 +43,12 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if(transform.position.y > _minY)
-                {
-                    _direction.y = -1;
-                }
+                _direction.y = -1;
             }
         }
         if(Input.GetKey(KeyCode.D))
         {
-            if(transform.position.x < _maxX)
-            {
-                _direction.x = 1;
-            }
+            _direction.x = 1;
         }
         if(Input.GetKey(KeyCode.A))
         {
@@ -66,10 +58,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if(transform.position.x > _minX)
-                {
-                    _direction.x = -1;
-                }
+                _direction.x = -1;
             }
         }
 
@@ -135,6 +124,14 @@ public class Player : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             gameObject.SetActive(false); // TODO Handle player death better and respawn the player and so on
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.CompareTag("Respawn"))
+        {
+            _rigidbody2D.position = _spawnPosition;
         }
     }
 }

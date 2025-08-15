@@ -170,9 +170,9 @@ public class Centipede : MonoBehaviour
     {
         if(_isHead)
         {
-            if(collision.gameObject.GetComponent<Lemming>())
+            if(collision.gameObject.TryGetComponent(out Lemming lemming))
             {
-                Destroy(collision.gameObject);
+                lemming.Kill();
                 Grow();
             }
             // if(collision.gameObject.TryGetComponent(out Centipede component)) // This is fun (and works) but it's FAR too easy to abuse through looped waypoints
