@@ -10,16 +10,17 @@ public class Centipede : MonoBehaviour
     Player _player;
     WaypointManager _waypointManager;
 
-    [SerializeField] Material _headMaterial, _bodyMaterial;
     [SerializeField] Obstacle _obstaclePrefab;
     [SerializeField] Transform _spawnPoint;
+    [SerializeField] Color _followerColor = Color.yellow, _headColor = Color.red;
     EnemyHealth _leader;
     Centipede _centipedePrefab;
     Centipede _follower;
-    bool _isHead;
+    bool _isHead, _isEvenSegment;
     public EnemyHealth EnemyHealth { get; private set; }
 
-    readonly string LEMMING_KILLER_LAYER = "LemmingKiller";
+    static readonly string LEMMING_KILLER_LAYER = "LemmingKiller";
+    static readonly int SEGMENT_WALK = Animator.StringToHash("SegmentWalk");
 
     void Awake()
     {
@@ -42,7 +43,13 @@ public class Centipede : MonoBehaviour
     
     void Update()
     {
-        if(!_waypointManager || !_player) { return; }
+        if(_player.gameObject.activeSelf == false)
+        {
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            return;
+        }
+
+        if(!_waypointManager) { return; }
 
         if(!_currentTarget)
         {
@@ -100,28 +107,41 @@ public class Centipede : MonoBehaviour
         _currentTarget = _waypointManager.Waypoints[_waypointIndex].transform;
     }
 
-    public void Setup(Centipede prefab, Player player, WaypointManager waypointManager, int waypointIndex)
+    public void Setup(Centipede prefab, Player player, WaypointManager waypointManager, int waypointIndex, bool isEven)
     {
         _centipedePrefab = prefab;
         _player = player;
         _waypointManager = waypointManager;
         _waypointIndex = waypointIndex;
+        _isEvenSegment = isEven;
     }
 
     public void SetAsHead()
     {
         _leader = null;
         _isHead = true;
-        GetComponentInChildren<MeshRenderer>().material = _headMaterial;
+        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        spriteRenderer.color = _headColor;
+        spriteRenderer.sortingOrder = 2;
+        GetComponentInChildren<Animator>().SetBool("IsHead", _isHead);
         int layerIdentifier = LayerMask.NameToLayer(LEMMING_KILLER_LAYER);
         gameObject.layer = layerIdentifier;
+        gameObject.tag = "Enemy";
     }
 
     public void SetFollower(Centipede follower)
     {
         _follower = follower;
         _follower.transform.position = _spawnPoint.position;
-        _follower.GetComponentInChildren<MeshRenderer>().material = _bodyMaterial;
+        _follower.GetComponentInChildren<SpriteRenderer>().color = _followerColor;
+        if(_isEvenSegment)
+        {
+            _follower.GetComponentInChildren<Animator>().Play(SEGMENT_WALK, 0, 0.5f);
+        }
+        else
+        {
+            _follower.GetComponentInChildren<Animator>().Play(SEGMENT_WALK, 0, 0f);
+        }
     }
 
     public void SetLeader(EnemyHealth leader)
@@ -136,7 +156,7 @@ public class Centipede : MonoBehaviour
             Centipede newSegment = Instantiate(_centipedePrefab, transform.parent);
 
             newSegment.SetLeader(GetComponent<EnemyHealth>());
-            newSegment.Setup(_centipedePrefab, _player, _waypointManager, _waypointIndex);
+            newSegment.Setup(_centipedePrefab, _player, _waypointManager, _waypointIndex, !_isEvenSegment);
 
             SetFollower(newSegment);
         }
@@ -148,10 +168,20 @@ public class Centipede : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(_isHead && collision.gameObject.GetComponent<Lemming>())
+        if(_isHead)
         {
-            Destroy(collision.gameObject);
-            Grow();
+            if(collision.gameObject.GetComponent<Lemming>())
+            {
+                Destroy(collision.gameObject);
+                Grow();
+            }
+            // if(collision.gameObject.TryGetComponent(out Centipede component)) // This is fun (and works) but it's FAR too easy to abuse through looped waypoints
+            // {
+            //     if(component != _follower && !component.IsHead)
+            //     {
+            //         component.GetComponent<EnemyHealth>().TakeDamage(5);
+            //     }
+            // }
         }
     }
 }

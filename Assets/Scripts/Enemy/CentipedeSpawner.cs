@@ -40,7 +40,7 @@ public class CentipedeSpawner : MonoBehaviour
                 newSegment.SetLeader(_previousSegment.GetComponent<EnemyHealth>());
                 _previousSegment.SetFollower(newSegment);
             }
-            newSegment.Setup(_centipedePrefab, _player, _waypointManager, 0);
+            newSegment.Setup(_centipedePrefab, _player, _waypointManager, 0, i % 2 == 0);
             _previousSegment = newSegment;
         }
     }
