@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c1fb4ac2a41dd04d8524e3b1d35dc00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lemmingPrefab: {fileID: 9145576533502658372, guid: 505412520b6b08840914fda72d4b918f, type: 3}
+  _lemmingPrefab: {fileID: 8564017486756431224, guid: 307a6a5958a7b8046bd92ee7e0041369, type: 3}
   _totalLemmings: 25
   _spawnDelay: 1.3
   _text: {fileID: 8221438965661209045}

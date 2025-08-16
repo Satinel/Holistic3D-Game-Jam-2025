@@ -11,20 +11,27 @@ public class Lemming : MonoBehaviour
     [SerializeField] float _fallingCheckThreshold = -0.1f;
     [SerializeField] float _blockedCheckDelay = 0.25f;
     [SerializeField] float _climbDelay = 0.15f;
-    [SerializeField] float _jumpDuration = 1f;
+    [SerializeField] float _jumpMaxDuration = 1f, _jumpMinDuration = 0.25f;
     [SerializeField] float _castCheckDistance = 0.2f;
     [SerializeField] LayerMask _dirtLayer;
     [SerializeField] Vector2 _boxSize = Vector2.one;
 
     Rigidbody2D _rigidbody2D;
-    bool _isFalling, _isClimbing, _isJumping;
+    bool _isFalling, _isClimbing, _isJumping, _isWalking;
     float _blockedTimer = 0, _jumpTimer = 0;
     Vector3 _previousPosition;
     float _defaultGravity = 1;
+    Animator _animator;
+
+    static readonly int WALK_HASH = Animator.StringToHash("Penging Walk");
+    static readonly int FALL_HASH = Animator.StringToHash("Penging Fall");
+    static readonly int CLIMB_HASH = Animator.StringToHash("Penging Climb");
+    static readonly int JUMP_HASH = Animator.StringToHash("Penging Jump");
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
         _previousPosition = transform.position;
         OnAnyLemmingSpawned?.Invoke(); // TODO Update UI displaying active lemmings probably!
     }
@@ -39,10 +46,11 @@ public class Lemming : MonoBehaviour
         if(_isJumping)
         {
             _jumpTimer += Time.deltaTime;
-            if(_jumpTimer > _jumpDuration)
+            if((_jumpTimer > _jumpMinDuration && _rigidbody2D.linearVelocityY >= 0) || _jumpTimer > _jumpMaxDuration)
             {
                 _isJumping = false;
                 _rigidbody2D.gravityScale = _defaultGravity;
+                _animator.Play(FALL_HASH);
             }
         }
         if(_isFalling) { return; }
@@ -62,6 +70,7 @@ public class Lemming : MonoBehaviour
                         _isClimbing = true;
                         _rigidbody2D.gravityScale = 0;
                         _blockedTimer -= _climbDelay;
+                        _animator.Play(CLIMB_HASH);
                     }
                     else
                     {
@@ -75,6 +84,7 @@ public class Lemming : MonoBehaviour
                     _rigidbody2D.gravityScale = _defaultGravity / 2;
                     _isJumping = true;
                     _jumpTimer = 0;
+                    _animator.Play(JUMP_HASH);
                 }
             }
 
@@ -84,7 +94,10 @@ public class Lemming : MonoBehaviour
 
     void FixedUpdate()
     {
+        bool fallingLastFrame = _isFalling;
+        bool walkingLastFrame = _isWalking;
         _isFalling = _rigidbody2D.linearVelocityY < _fallingCheckThreshold;
+        _isWalking = !_isFalling && !_isClimbing && !_isJumping;
 
         if(_isJumping)
         {
@@ -93,6 +106,10 @@ public class Lemming : MonoBehaviour
         else if(_isFalling)
         {
             _rigidbody2D.linearVelocity = new(0, _rigidbody2D.linearVelocityY);
+            if(!fallingLastFrame)
+            {
+                _animator.Play(FALL_HASH);
+            }
         }
         else if(_isClimbing)
         {
@@ -106,7 +123,12 @@ public class Lemming : MonoBehaviour
         }
         else
         {
+            _isWalking = true;
             _rigidbody2D.linearVelocity = new(_moveSpeed * transform.right.x, _rigidbody2D.linearVelocityY);
+            if(!walkingLastFrame)
+            {
+                _animator.Play(WALK_HASH);
+            }
         }
     }
 

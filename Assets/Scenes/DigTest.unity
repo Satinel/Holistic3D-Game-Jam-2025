@@ -1359,7 +1359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5258679784947177673, guid: 3946cd07f5441a44da5ccd08a9203819, type: 3}
       propertyPath: m_Name
-      value: Lemming Goal
+      value: Penging Goal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1433,7 +1433,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4316138618933811145, guid: 7cb40c6a3479af541acc4092169f6327, type: 3}
       propertyPath: m_Name
-      value: Lemming Spawner
+      value: Penging Spawner
       objectReference: {fileID: 0}
     - target: {fileID: 7265691387648541001, guid: 7cb40c6a3479af541acc4092169f6327, type: 3}
       propertyPath: m_LocalPosition.x
