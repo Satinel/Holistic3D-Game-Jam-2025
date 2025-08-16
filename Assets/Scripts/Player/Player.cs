@@ -8,16 +8,22 @@ public class Player : MonoBehaviour
     [SerializeField] float _moveSpeed = 3f, _spawnRadius = 0.8f;
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
+    [SerializeField] SpriteRenderer _spriteRenderer;
 
     Vector2 _direction = Vector2.right;
     Vector2 _spawnPosition = new();
     Rigidbody2D _rigidbody2D;
     Ball _activeBall;
+    Animator _animator;
+
+    static readonly int WALK_HASH = Animator.StringToHash("Player Move");
+    static readonly int IDLE_HASH = Animator.StringToHash("Player Idle");
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _spawnPosition = transform.position;
+        _animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -65,11 +71,20 @@ public class Player : MonoBehaviour
         if(_direction != previousDirection)
         {
             OnWaypointSet?.Invoke(transform.position);
+            if(previousDirection == Vector2.zero)
+            {
+                _animator.Play(WALK_HASH);
+            }
+            else if(_direction == Vector2.zero)
+            {
+                _animator.Play(IDLE_HASH);
+            }
         }
 
         _rigidbody2D.linearVelocity = _moveSpeed * _direction;
 
         SetBallSpawnPosition();
+        _spriteRenderer.flipY = (_direction.x < 0) || (_direction.x == 0 && _spriteRenderer.flipY);
 
         if(Input.GetKeyDown(KeyCode.Space))
         {
