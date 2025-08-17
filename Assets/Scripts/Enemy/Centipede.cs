@@ -127,6 +127,10 @@ public class Centipede : MonoBehaviour
         int layerIdentifier = LayerMask.NameToLayer(LEMMING_KILLER_LAYER);
         gameObject.layer = layerIdentifier;
         gameObject.tag = "Enemy";
+        if(EnemyHealth)
+        {
+            EnemyHealth.ChangeScoreValue(100);
+        }
     }
 
     public void SetFollower(Centipede follower)

@@ -5,6 +5,8 @@ public class EnemyHealth : MonoBehaviour
 {
     public static event Action<EnemyHealth> OnAnyEnemyDestroyed;
 
+    [field:SerializeField] public int ScoreValue { get; private set; } = 50;
+
     [SerializeField] int _maxHealth = 1;
     int _currentHealth;
 
@@ -27,5 +29,10 @@ public class EnemyHealth : MonoBehaviour
         OnAnyEnemyDestroyed?.Invoke(this);
 
         gameObject.SetActive(false); // TODO At least play a sound or something! Add to score and so on
+    }
+
+    public void ChangeScoreValue(int amount)
+    {
+        ScoreValue += amount;
     }
 }

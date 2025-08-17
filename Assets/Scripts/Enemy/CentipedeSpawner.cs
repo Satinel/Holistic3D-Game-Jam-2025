@@ -6,21 +6,31 @@ public class CentipedeSpawner : MonoBehaviour
     [SerializeField] int _totalSegments;
     [SerializeField] Vector2 _spawnPosition = new();
     [SerializeField] Centipede _centipedePrefab;
+    [SerializeField] float _spawnDelay = 60;
 
     Player _player;
     WaypointManager _waypointManager;
     Centipede _previousSegment;
+    float _timer = 0;
+    bool _hasSpawned = false;
 
 
     void Awake()
     {
         _player = FindFirstObjectByType<Player>();
         _waypointManager = FindFirstObjectByType<WaypointManager>();
-    }    
+    }
 
-    void Start()
+    void Update()
     {
-        SpawnCentipede(); // TODO Spawn at a set time tracked in another script like LemmingSpawner
+        if(_hasSpawned) { return; }
+
+        _timer += Time.deltaTime;
+        if(_timer >= _spawnDelay)
+        {
+            _hasSpawned = true;
+            SpawnCentipede();
+        }
     }
 
     void SpawnCentipede()
