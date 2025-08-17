@@ -17,7 +17,7 @@ public class Centipede : MonoBehaviour
     EnemyHealth _leader;
     Centipede _centipedePrefab;
     Centipede _follower;
-    bool _isHead, _isEvenSegment;
+    bool _isHead, _isEvenSegment, _playerDead;
     public EnemyHealth EnemyHealth { get; private set; }
 
     static readonly string LEMMING_KILLER_LAYER = "LemmingKiller";
@@ -37,18 +37,20 @@ public class Centipede : MonoBehaviour
     {
         EnemyHealth.OnAnyEnemyDestroyed += EnemyHealth_OnAnyEnemyDestroyed;
         Player.OnWaypointSet += Player_OnWaypointSet;
+        Player.OnPlayerKilled += Player_OnPlayerKilled;
     }
 
     void OnDisable()
     {
         EnemyHealth.OnAnyEnemyDestroyed -= EnemyHealth_OnAnyEnemyDestroyed;
         Player.OnWaypointSet -= Player_OnWaypointSet;
+        Player.OnPlayerKilled -= Player_OnPlayerKilled;
     }
 
     
     void Update()
     {
-        if(_player.gameObject.activeSelf == false)
+        if(_playerDead || _player.gameObject.activeSelf == false)
         {
             _rigidbody2D.linearVelocity = Vector2.zero;
             return;
@@ -104,6 +106,11 @@ public class Centipede : MonoBehaviour
         {
             Invoke(nameof(UpdateWayPoints), 0.01f);
         }
+    }
+
+    void Player_OnPlayerKilled()
+    {
+        _playerDead = true;
     }
 
     void UpdateWayPoints()

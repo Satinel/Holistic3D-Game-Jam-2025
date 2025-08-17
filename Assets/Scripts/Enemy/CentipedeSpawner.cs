@@ -12,12 +12,14 @@ public class CentipedeSpawner : MonoBehaviour
     Centipede _previousSegment;
     float _timer = 0;
     bool _hasSpawned = false;
+    GameUI _gameUI;
 
 
     void Awake()
     {
         _player = FindFirstObjectByType<Player>();
         _waypointManager = FindFirstObjectByType<WaypointManager>();
+        _gameUI = FindFirstObjectByType<GameUI>();
     }
 
     void Update()
@@ -25,8 +27,16 @@ public class CentipedeSpawner : MonoBehaviour
         if(_hasSpawned) { return; }
 
         _timer += Time.deltaTime;
+        if(_gameUI)
+        {
+            _gameUI.TimerText.text = "SNACK-OPEDE " + (_spawnDelay - _timer).ToString("000");
+        }
         if(_timer >= _spawnDelay)
         {
+            if(_gameUI)
+            {
+                _gameUI.TimerText.text = "SNACK-OPEDE 000";
+            }
             _hasSpawned = true;
             SpawnCentipede();
         }

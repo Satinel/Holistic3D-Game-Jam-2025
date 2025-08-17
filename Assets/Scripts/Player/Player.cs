@@ -4,6 +4,7 @@ using System;
 public class Player : MonoBehaviour
 {
     public static event Action<Vector2> OnWaypointSet;
+    public static event Action OnPlayerKilled;
 
     [SerializeField] float _moveSpeed = 3f, _spawnRadius = 0.8f;
     [SerializeField] Ball _ballPrefab;
@@ -138,6 +139,7 @@ public class Player : MonoBehaviour
         }
         if(collision.gameObject.CompareTag("Enemy"))
         {
+            OnPlayerKilled?.Invoke();
             gameObject.SetActive(false); // TODO Handle player death better and respawn the player and so on
         }
     }

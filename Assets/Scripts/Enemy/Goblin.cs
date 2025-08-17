@@ -5,6 +5,16 @@ public class Goblin : MonoBehaviour
     [SerializeField] float _moveSpeed = 5;
     [SerializeField] Rigidbody2D _rigidbody2D;
 
+    void OnEnable()
+    {
+        Player.OnPlayerKilled += Player_OnPlayerKilled;
+    }
+
+    void OnDisable()
+    {
+        Player.OnPlayerKilled -= Player_OnPlayerKilled;
+    }
+
     void Update()
     {
         _rigidbody2D.linearVelocityX = _moveSpeed * transform.right.x;
@@ -21,5 +31,10 @@ public class Goblin : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         transform.right = -transform.right;
+    }
+
+    void Player_OnPlayerKilled()
+    {
+        _moveSpeed = 0;
     }
 }
