@@ -4,7 +4,6 @@ public class CentipedeSpawner : MonoBehaviour
 {
 
     [SerializeField] int _totalSegments;
-    [SerializeField] Vector2 _spawnPosition = new();
     [SerializeField] Centipede _centipedePrefab;
     [SerializeField] float _spawnDelay = 60;
 
@@ -37,13 +36,13 @@ public class CentipedeSpawner : MonoBehaviour
     {
         for(int i = 0; i < _totalSegments; i++)
         {
-            Centipede newSegment = Instantiate(_centipedePrefab, transform);
+            Centipede newSegment = Instantiate(_centipedePrefab, transform.position, transform.rotation, transform);
             newSegment.name = $"Segment {i}";
 
             if(i == 0)
             {
                 newSegment.SetAsHead();
-                newSegment.transform.position = new(_spawnPosition.x, _spawnPosition.y);
+                newSegment.transform.position = transform.position;
             }
             else
             {
@@ -52,6 +51,14 @@ public class CentipedeSpawner : MonoBehaviour
             }
             newSegment.Setup(_centipedePrefab, _player, _waypointManager, 0, i % 2 == 0);
             _previousSegment = newSegment;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if(collision.gameObject.TryGetComponent(out Centipede centipede))
+        {
+            centipede.ShowFollower();
         }
     }
 }

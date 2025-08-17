@@ -13,6 +13,7 @@ public class Centipede : MonoBehaviour
     [SerializeField] Obstacle _obstaclePrefab;
     [SerializeField] Transform _spawnPoint;
     [SerializeField] Color _followerColor = Color.yellow, _headColor = Color.red;
+    [SerializeField] SpriteRenderer _spriteRenderer;
     EnemyHealth _leader;
     Centipede _centipedePrefab;
     Centipede _follower;
@@ -25,6 +26,7 @@ public class Centipede : MonoBehaviour
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         EnemyHealth = GetComponent<EnemyHealth>();
     }
 
@@ -120,9 +122,9 @@ public class Centipede : MonoBehaviour
     {
         _leader = null;
         _isHead = true;
-        SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        spriteRenderer.color = _headColor;
-        spriteRenderer.sortingOrder = 2;
+        _spriteRenderer.color = _headColor;
+        _spriteRenderer.sortingOrder = 2;
+        _spriteRenderer.enabled = true;
         GetComponentInChildren<Animator>().SetBool("IsHead", _isHead);
         int layerIdentifier = LayerMask.NameToLayer(LEMMING_KILLER_LAYER);
         gameObject.layer = layerIdentifier;
@@ -163,10 +165,19 @@ public class Centipede : MonoBehaviour
             newSegment.Setup(_centipedePrefab, _player, _waypointManager, _waypointIndex, !_isEvenSegment);
 
             SetFollower(newSegment);
+            ShowFollower();
         }
         else
         {
             _follower.Grow();
+        }
+    }
+
+    public void ShowFollower()
+    {
+        if(_follower)
+        {
+            _follower.GetComponentInChildren<SpriteRenderer>().enabled = _spriteRenderer.enabled;
         }
     }
 

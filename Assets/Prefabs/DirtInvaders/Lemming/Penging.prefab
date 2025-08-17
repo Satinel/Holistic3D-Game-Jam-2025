@@ -126,7 +126,8 @@ MonoBehaviour:
   _fallingCheckThreshold: -0.25
   _blockedCheckDelay: 0.25
   _climbDelay: 0.15
-  _jumpDuration: 1
+  _jumpMaxDuration: 1
+  _jumpMinDuration: 0.25
   _castCheckDistance: 0.1
   _dirtLayer:
     serializedVersion: 2
@@ -227,8 +228,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1737718635
+  m_SortingLayer: 4
   m_SortingOrder: 25
   m_Sprite: {fileID: -2146466653, guid: 631558035c803a54f866a21b999bc451, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

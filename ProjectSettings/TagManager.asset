@@ -45,6 +45,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 3305823553
+    locked: 0
+  - name: Blocks
+    uniqueID: 799639061
+    locked: 0
+  - name: Enemies
+    uniqueID: 221883353
+    locked: 0
+  - name: Friends
+    uniqueID: 2557248661
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
