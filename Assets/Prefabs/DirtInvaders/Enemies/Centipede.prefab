@@ -144,12 +144,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b066cad448782254e98c1289bbdaada2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
+  _moveSpeed: 4
   _minDistance: 0.1
   _obstaclePrefab: {fileID: 4274688033422964287, guid: baa48571b282ce6478212179ce75b490, type: 3}
   _spawnPoint: {fileID: 7454050532925147259}
   _followerColor: {r: 1, g: 0.8627451, b: 0, a: 1}
   _headColor: {r: 0.8862745, g: 0, b: 0, a: 1}
+  _spriteRenderer: {fileID: 4060964450704459451}
 --- !u!114 &-586833526176411328
 MonoBehaviour:
   m_ObjectHideFlags: 0

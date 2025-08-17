@@ -822,10 +822,10 @@
     "m_Guid": {
         "m_GuidSerialized": "e57a8343-c83b-4eff-8156-5fb0e20a9f27"
     },
-    "m_Name": "Texture2D",
+    "m_Name": "_MainTex",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "Texture2D",
-    "m_DefaultReferenceName": "_Texture2D",
+    "m_RefNameGeneratedByDisplayName": "_MainTex",
+    "m_DefaultReferenceName": "_MainTex",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
@@ -3093,8 +3093,8 @@
     "m_ObjectId": "9515495873ba4c50b7c05f1626df4d0b",
     "m_Title": "Pixelation Effect",
     "m_Position": {
-        "x": -896.0000610351563,
-        "y": -933.0001220703125
+        "x": -896.0,
+        "y": -933.0
     }
 }
 
@@ -3768,7 +3768,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Texture2DMaterialSlot",
     "m_ObjectId": "b976fe301b4e413b9c7cfbca07ff319f",
     "m_Id": 0,
-    "m_DisplayName": "Texture2D",
+    "m_DisplayName": "_MainTex",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",

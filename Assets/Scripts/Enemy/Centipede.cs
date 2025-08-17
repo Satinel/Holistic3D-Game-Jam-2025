@@ -26,7 +26,10 @@ public class Centipede : MonoBehaviour
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        if(!_spriteRenderer)
+        {
+            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        }
         EnemyHealth = GetComponent<EnemyHealth>();
     }
 

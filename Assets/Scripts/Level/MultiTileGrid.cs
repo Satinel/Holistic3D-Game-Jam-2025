@@ -1,5 +1,6 @@
 using UnityEngine;
 
+// [ExecuteAlways]
 public class MultiTileGrid : MonoBehaviour
 {
     [SerializeField] GameObject _tilePrefab;
@@ -9,10 +10,10 @@ public class MultiTileGrid : MonoBehaviour
 
     [SerializeField] Color[] _colors;
 
-    void Start()
-    {
-        SpawnMultiTiles();
-    }
+    // void Awake()
+    // {
+    //     SpawnMultiTiles();
+    // }
 
     void SpawnMultiTiles()
     {
@@ -22,14 +23,6 @@ public class MultiTileGrid : MonoBehaviour
         {
             for(int x = 0; x < _gridSizeX; x++)
             {
-                // if(nextTile == _multiTileWhite)
-                // {
-                //     nextTile = _multiTileBlack;
-                // }
-                // else
-                // {
-                //     nextTile = _multiTileWhite;
-                // }
                 GameObject tile = Instantiate(nextTile, new Vector2(x * _tileSize, y * _tileSize), Quaternion.identity, transform);
                 tile.name = $"Tile {x}, {y}";
                 SetTileColor(tile.GetComponent<SpriteRenderer>(), y);
