@@ -1,8 +1,11 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class LemmingSpawner : MonoBehaviour
 {
+    public static event Action OnAllLemmingsSpawned;
+
     [SerializeField] Lemming _lemmingPrefab;
     [SerializeField] int _totalLemmings = 25;
     [SerializeField] float _spawnDelay = 1.3f;
@@ -11,6 +14,7 @@ public class LemmingSpawner : MonoBehaviour
 
     int _spawnCount = 0;
     float _timer = 0;
+    bool _allSpawned;
 
     void Start()
     {
@@ -19,7 +23,7 @@ public class LemmingSpawner : MonoBehaviour
 
     void Update()
     {
-        if(_spawnCount >= _totalLemmings) { return; }
+        if(_allSpawned) { return; }
 
         _timer += Time.deltaTime;
 
@@ -30,6 +34,11 @@ public class LemmingSpawner : MonoBehaviour
             newLemming.name = $"Lemming {_spawnCount}";
             _spawnCount++;
             _text.text = $"{_totalLemmings - _spawnCount}";
+            if(_spawnCount >= _totalLemmings)
+            {
+                OnAllLemmingsSpawned?.Invoke();
+                _allSpawned = true;
+            }
         }
     }
 }

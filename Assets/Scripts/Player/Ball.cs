@@ -21,12 +21,16 @@ public class Ball : MonoBehaviour
 
     void OnEnable()
     {
-        Paddle.OnPaddleDestroyed += Paddle_OnPaddleDestroyed;
+        Player.OnPlayerKilled += DestroyBall;
+        LevelManager.OnLevelFailed += DestroyBall;
+        LevelManager.OnLevelWon += DestroyBall;
     }
 
     void OnDisable()
     {
-        Paddle.OnPaddleDestroyed -= Paddle_OnPaddleDestroyed;
+        Player.OnPlayerKilled -= DestroyBall;
+        LevelManager.OnLevelFailed += DestroyBall;
+        LevelManager.OnLevelWon += DestroyBall;
     }
 
     public void Launch()
@@ -46,7 +50,7 @@ public class Ball : MonoBehaviour
         Destroy(gameObject, _lifeTime);
     }
 
-    void Paddle_OnPaddleDestroyed()
+    void DestroyBall()
     {
         Destroy(gameObject);
     }

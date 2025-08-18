@@ -7,12 +7,16 @@ public class Goblin : MonoBehaviour
 
     void OnEnable()
     {
-        Player.OnPlayerKilled += Player_OnPlayerKilled;
+        Player.OnPlayerKilled += StopMoving;
+        LevelManager.OnLevelFailed += StopMoving;
+        LevelManager.OnLevelWon += StopMoving;
     }
 
     void OnDisable()
     {
-        Player.OnPlayerKilled -= Player_OnPlayerKilled;
+        Player.OnPlayerKilled -= StopMoving;
+        LevelManager.OnLevelFailed += StopMoving;
+        LevelManager.OnLevelWon += StopMoving;
     }
 
     void Update()
@@ -33,7 +37,7 @@ public class Goblin : MonoBehaviour
         transform.right = -transform.right;
     }
 
-    void Player_OnPlayerKilled()
+    void StopMoving()
     {
         _moveSpeed = 0;
     }

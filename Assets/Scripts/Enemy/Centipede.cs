@@ -17,7 +17,7 @@ public class Centipede : MonoBehaviour
     EnemyHealth _leader;
     Centipede _centipedePrefab;
     Centipede _follower;
-    bool _isHead, _isEvenSegment, _playerDead;
+    bool _isHead, _isEvenSegment, _levelOver;
     public EnemyHealth EnemyHealth { get; private set; }
 
     static readonly string LEMMING_KILLER_LAYER = "LemmingKiller";
@@ -38,6 +38,8 @@ public class Centipede : MonoBehaviour
         EnemyHealth.OnAnyEnemyDestroyed += EnemyHealth_OnAnyEnemyDestroyed;
         Player.OnWaypointSet += Player_OnWaypointSet;
         Player.OnPlayerKilled += Player_OnPlayerKilled;
+        LevelManager.OnLevelFailed += LevelManager_OnLevelFailed;
+        LevelManager.OnLevelWon += LevelManager_OnLevelWon;
     }
 
     void OnDisable()
@@ -45,12 +47,14 @@ public class Centipede : MonoBehaviour
         EnemyHealth.OnAnyEnemyDestroyed -= EnemyHealth_OnAnyEnemyDestroyed;
         Player.OnWaypointSet -= Player_OnWaypointSet;
         Player.OnPlayerKilled -= Player_OnPlayerKilled;
+        LevelManager.OnLevelFailed -= LevelManager_OnLevelFailed;
+        LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
     }
 
     
     void Update()
     {
-        if(_playerDead || _player.gameObject.activeSelf == false)
+        if(_levelOver || _player.gameObject.activeSelf == false)
         {
             _rigidbody2D.linearVelocity = Vector2.zero;
             return;
@@ -110,7 +114,17 @@ public class Centipede : MonoBehaviour
 
     void Player_OnPlayerKilled()
     {
-        _playerDead = true;
+        _levelOver = true;
+    }
+
+    void LevelManager_OnLevelFailed()
+    {
+        _levelOver = true;
+    }
+
+    void LevelManager_OnLevelWon()
+    {
+        _levelOver = true;
     }
 
     void UpdateWayPoints()

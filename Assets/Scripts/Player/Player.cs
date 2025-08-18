@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     Rigidbody2D _rigidbody2D;
     Ball _activeBall;
     Animator _animator;
+    bool _levelOver;
 
     static readonly int WALK_HASH = Animator.StringToHash("Player Move");
     static readonly int IDLE_HASH = Animator.StringToHash("Player Idle");
@@ -32,8 +33,22 @@ public class Player : MonoBehaviour
         OnWaypointSet?.Invoke(transform.position);
     }
 
+    void OnEnable()
+    {
+        LevelManager.OnLevelFailed += LevelManager_OnLevelFailed;
+        LevelManager.OnLevelWon += LevelManager_OnLevelWon;
+    }
+
+    void OnDisable()
+    {
+        LevelManager.OnLevelFailed -= LevelManager_OnLevelFailed;
+        LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
+    }
+
     void Update()
     {
+        if(_levelOver) { return; }
+
         Vector2 previousDirection = _direction;
 
         _direction = Vector2.zero;
@@ -129,6 +144,8 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if(_levelOver) { return; }
+
         if(collision.gameObject.CompareTag("Dirt"))
         {
             collision.gameObject.SetActive(false);
@@ -150,5 +167,17 @@ public class Player : MonoBehaviour
         {
             _rigidbody2D.position = _spawnPosition;
         }
+    }
+
+    void LevelManager_OnLevelFailed()
+    {
+        _direction = Vector2.zero;
+        _levelOver = true;
+    }
+
+    void LevelManager_OnLevelWon()
+    {
+        _direction = Vector2.zero;
+        _levelOver = true;
     }
 }
