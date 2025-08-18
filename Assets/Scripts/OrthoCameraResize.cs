@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Test : MonoBehaviour
+public class OrthoCameraResize : MonoBehaviour
 {
     [SerializeField] SpriteRenderer _leftBorder, _topBorder;
 
