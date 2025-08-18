@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _escapeValue: 1500
+  _floatingScorePrefab: {fileID: 3111783085633495080, guid: 3002b50ce9129324283a797757bce9d7, type: 3}

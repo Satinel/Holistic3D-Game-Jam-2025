@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 2139227636251307193}
   - component: {fileID: -586833526176411328}
   - component: {fileID: 7408981851829542663}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Centipede
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ SpriteRenderer:
   m_SortingLayerID: 221883353
   m_SortingLayer: 3
   m_SortingOrder: 1
-  m_Sprite: {fileID: -534128584, guid: f28ec8b5f2db53d4eaf84e45e5c1b64b, type: 3}
+  m_Sprite: {fileID: -923742156, guid: d7be60788ce13724a9f93202539ce11f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

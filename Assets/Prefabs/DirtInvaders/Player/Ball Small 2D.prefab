@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2315042994965963234}
   - component: {fileID: 8894996569033020079}
   - component: {fileID: 5721180322804011408}
+  - component: {fileID: 8489528845169709671}
   m_Layer: 0
   m_Name: Ball Small 2D
   m_TagString: Ball
@@ -168,3 +169,31 @@ MonoBehaviour:
   _moveSpeed: 10
   _limitSpeed: 1
   _lifeTime: 5
+--- !u!114 &8489528845169709671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2932992125852069806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33bdb6d9345740d46b89f8c41467e48c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colors:
+  - serializedVersion: 2
+    rgba: 4279440361
+  - serializedVersion: 2
+    rgba: 4278232575
+  - serializedVersion: 2
+    rgba: 4281262818
+  - serializedVersion: 2
+    rgba: 4280998186
+  - serializedVersion: 2
+    rgba: 4292419616
+  - serializedVersion: 2
+    rgba: 4291437910
+  - serializedVersion: 2
+    rgba: 4291774415
+  _speed: 5

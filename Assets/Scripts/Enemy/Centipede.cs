@@ -54,7 +54,7 @@ public class Centipede : MonoBehaviour
     
     void Update()
     {
-        if(_levelOver || _player.gameObject.activeSelf == false)
+        if(_levelOver || _player.enabled == false)
         {
             _rigidbody2D.linearVelocity = Vector2.zero;
             return;

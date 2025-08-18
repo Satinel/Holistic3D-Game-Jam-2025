@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 
+[RequireComponent(typeof(RainbowCycle))]
 public class Ball : MonoBehaviour
 {
     public static event Action OnBallDestroyed;
@@ -11,12 +12,16 @@ public class Ball : MonoBehaviour
     [SerializeField] float _lifeTime = 10f;
 
     Rigidbody2D _rigidbody2D;
+    RainbowCycle _rainbowCycle;
+    Material _material;
 
     bool _hasLaunched = false;
 
     void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
+        _rainbowCycle = GetComponent<RainbowCycle>();
+        _material = GetComponent<MeshRenderer>().material;
     }
 
     void OnEnable()
@@ -29,8 +34,13 @@ public class Ball : MonoBehaviour
     void OnDisable()
     {
         Player.OnPlayerKilled -= DestroyBall;
-        LevelManager.OnLevelFailed += DestroyBall;
-        LevelManager.OnLevelWon += DestroyBall;
+        LevelManager.OnLevelFailed -= DestroyBall;
+        LevelManager.OnLevelWon -= DestroyBall;
+    }
+
+    void Update()
+    {
+        _material.color = _rainbowCycle.LerpColor();
     }
 
     public void Launch()

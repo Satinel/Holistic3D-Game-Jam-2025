@@ -158,6 +158,7 @@ public class Player : MonoBehaviour
         {
             OnPlayerKilled?.Invoke();
             gameObject.SetActive(false); // TODO Handle player death better and respawn the player and so on
+            enabled = false;
         }
     }
 
@@ -171,13 +172,15 @@ public class Player : MonoBehaviour
 
     void LevelManager_OnLevelFailed()
     {
-        _direction = Vector2.zero;
+        _rigidbody2D.linearVelocity = Vector2.zero;
         _levelOver = true;
+        enabled = false;
     }
 
     void LevelManager_OnLevelWon()
     {
-        _direction = Vector2.zero;
+        _rigidbody2D.linearVelocity = Vector2.zero;
         _levelOver = true;
+        enabled = false;
     }
 }

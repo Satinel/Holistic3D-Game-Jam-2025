@@ -11,7 +11,7 @@ public class CentipedeSpawner : MonoBehaviour
     WaypointManager _waypointManager;
     Centipede _previousSegment;
     float _timer = 0;
-    bool _hasSpawned = false;
+    bool _hasSpawned = false, _levelCleared = false;
     GameUI _gameUI;
 
 
@@ -22,9 +22,22 @@ public class CentipedeSpawner : MonoBehaviour
         _gameUI = FindFirstObjectByType<GameUI>();
     }
 
+    void OnEnable()
+    {
+        LevelManager.OnLevelFailed += StopCountdown;
+        LevelManager.OnLevelWon += StopCountdown;
+    }
+
+    void OnDisable()
+    {
+        LevelManager.OnLevelFailed += StopCountdown;
+        LevelManager.OnLevelWon += StopCountdown;
+    }
+
     void Update()
     {
         if(_hasSpawned) { return; }
+        if(_levelCleared) { return; }
 
         _timer += Time.deltaTime;
         if(_gameUI)
@@ -40,6 +53,11 @@ public class CentipedeSpawner : MonoBehaviour
             _hasSpawned = true;
             SpawnCentipede();
         }
+    }
+
+    void StopCountdown()
+    {
+        _levelCleared = true;
     }
 
     void SpawnCentipede()

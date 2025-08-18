@@ -5,8 +5,15 @@ public class ScoreKeeper : MonoBehaviour
     public int Score { get; private set; }
 
     [SerializeField] int _escapeValue = 1500;
+    [SerializeField] FloatingScore _floatingScorePrefab;
 
     int _levelScore;
+    LemmingGoal _lemmingGoal;
+
+    void Awake()
+    {
+        _lemmingGoal = FindFirstObjectByType<LemmingGoal>();
+    }
 
     void OnEnable()
     {
@@ -22,24 +29,33 @@ public class ScoreKeeper : MonoBehaviour
         Lemming.OnAnyLemmingEscaped -= Lemming_OnAnyLemmingEscaped;
     }
 
-    void Collectable_OnGetCollectable(int value)
+    void Collectable_OnGetCollectable(Vector2 position, int value)
     {
         _levelScore += value;
+        CreateFloatingText(position, value);
     }
 
     void EnemyHealth_OnAnyEnemyDestroyed(EnemyHealth enemyHealth)
     {
         _levelScore += enemyHealth.ScoreValue;
+        CreateFloatingText(enemyHealth.transform.position, enemyHealth.ScoreValue);
     }
 
     void Lemming_OnAnyLemmingEscaped()
     {
         _levelScore += _escapeValue;
+        CreateFloatingText(_lemmingGoal.ScorePositon.position, _escapeValue);
     }
 
     void AddLevelScoreToTotal() // TODO When level successfully completed or Game Over
     {
         Score += _levelScore;
         _levelScore = 0;
+    }
+
+    void CreateFloatingText(Vector3 position, int value)
+    {
+        FloatingScore floatingScore = Instantiate(_floatingScorePrefab, position, Quaternion.identity);
+        floatingScore.SetText(value.ToString());
     }
 }
