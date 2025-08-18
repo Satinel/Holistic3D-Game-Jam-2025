@@ -5,22 +5,28 @@ public class Goblin : MonoBehaviour
     [SerializeField] float _moveSpeed = 5;
     [SerializeField] Rigidbody2D _rigidbody2D;
 
+    bool _shouldMove;
+
     void OnEnable()
     {
-        Player.OnPlayerKilled += StopMoving;
+        LevelManager.OnLevelStarted += LevelManager_OnLevelStarted;
         LevelManager.OnLevelFailed += StopMoving;
         LevelManager.OnLevelWon += StopMoving;
+        Player.OnPlayerKilled += StopMoving;
     }
 
     void OnDisable()
     {
+        LevelManager.OnLevelStarted -= LevelManager_OnLevelStarted;
+        LevelManager.OnLevelFailed -= StopMoving;
+        LevelManager.OnLevelWon -= StopMoving;
         Player.OnPlayerKilled -= StopMoving;
-        LevelManager.OnLevelFailed += StopMoving;
-        LevelManager.OnLevelWon += StopMoving;
     }
 
     void Update()
     {
+        if(!_shouldMove) { return; }
+
         _rigidbody2D.linearVelocityX = _moveSpeed * transform.right.x;
     }
 
@@ -37,8 +43,14 @@ public class Goblin : MonoBehaviour
         transform.right = -transform.right;
     }
 
+    void LevelManager_OnLevelStarted()
+    {
+        _shouldMove = true;
+    }
+
     void StopMoving()
     {
-        _moveSpeed = 0;
+        _shouldMove = false;
+        _rigidbody2D.linearVelocityX = 0;
     }
 }

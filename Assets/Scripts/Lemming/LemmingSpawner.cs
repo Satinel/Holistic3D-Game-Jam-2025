@@ -14,7 +14,17 @@ public class LemmingSpawner : MonoBehaviour
 
     int _spawnCount = 0;
     float _timer = 0;
-    bool _allSpawned;
+    bool _allSpawned, _levelStarted;
+
+    void OnEnable()
+    {
+        LevelManager.OnLevelStarted += LevelManager_OnLevelStarted;
+    }
+
+    void OnDisable()
+    {
+        LevelManager.OnLevelStarted -= LevelManager_OnLevelStarted;
+    }
 
     void Start()
     {
@@ -23,7 +33,7 @@ public class LemmingSpawner : MonoBehaviour
 
     void Update()
     {
-        if(_allSpawned) { return; }
+        if(_allSpawned || !_levelStarted) { return; }
 
         _timer += Time.deltaTime;
 
@@ -40,5 +50,10 @@ public class LemmingSpawner : MonoBehaviour
                 _allSpawned = true;
             }
         }
+    }
+
+    void LevelManager_OnLevelStarted()
+    {
+        _levelStarted = true;
     }
 }

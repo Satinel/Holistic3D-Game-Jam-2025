@@ -1,17 +1,19 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class LevelManager : MonoBehaviour
 {
+    public static event Action OnLevelStarted;
     public static event Action OnLevelWon;
     public static event Action OnLevelFailed;
 
-    bool _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed;
+    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed;
     int _activeLemmings, _savedLemmings;
 
     void OnEnable()
     {
+        SceneManager.sceneLoaded += SceneManager_SceneLoaded;
         Player.OnPlayerKilled += Player_OnPlayerKilled;
         LemmingSpawner.OnAllLemmingsSpawned += LemmingSpawner_OnAllLemmingsSpawned;
         Lemming.OnAnyLemmingSpawned += Lemming_OnAnyLemmingSpawned;
@@ -21,6 +23,7 @@ public class LevelManager : MonoBehaviour
 
     void OnDisable()
     {
+        SceneManager.sceneLoaded -= SceneManager_SceneLoaded;
         Player.OnPlayerKilled -= Player_OnPlayerKilled;
         LemmingSpawner.OnAllLemmingsSpawned -= LemmingSpawner_OnAllLemmingsSpawned;
         Lemming.OnAnyLemmingSpawned -= Lemming_OnAnyLemmingSpawned;
@@ -30,6 +33,15 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
+        if(!_sceneStarted && _sceneIsLoaded)
+        {
+            if(Input.anyKeyDown)
+            {
+                _sceneStarted = true;
+                OnLevelStarted?.Invoke();
+            }
+        }
+
         if(_levelComplete)
         {
             if(Input.anyKeyDown)
@@ -49,6 +61,11 @@ public class LevelManager : MonoBehaviour
 
             return;
         }
+    }
+
+    void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        _sceneIsLoaded = true;
     }
 
     void Player_OnPlayerKilled()

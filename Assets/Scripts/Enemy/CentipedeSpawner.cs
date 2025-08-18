@@ -5,13 +5,13 @@ public class CentipedeSpawner : MonoBehaviour
 
     [SerializeField] int _totalSegments;
     [SerializeField] Centipede _centipedePrefab;
-    [SerializeField] float _spawnDelay = 60;
+    [SerializeField] float _spawnDelay = 60f, _spawnDelayIncrease = 30f;
 
     Player _player;
     WaypointManager _waypointManager;
     Centipede _previousSegment;
     float _timer = 0;
-    bool _hasSpawned = false, _levelCleared = false;
+    bool _levelStarted = false, _levelCleared = false;
     GameUI _gameUI;
 
 
@@ -24,22 +24,25 @@ public class CentipedeSpawner : MonoBehaviour
 
     void OnEnable()
     {
+        LevelManager.OnLevelStarted += StartCountDown;
         LevelManager.OnLevelFailed += StopCountdown;
         LevelManager.OnLevelWon += StopCountdown;
     }
 
     void OnDisable()
     {
-        LevelManager.OnLevelFailed += StopCountdown;
-        LevelManager.OnLevelWon += StopCountdown;
+        LevelManager.OnLevelStarted -= StartCountDown;
+        LevelManager.OnLevelFailed -= StopCountdown;
+        LevelManager.OnLevelWon -= StopCountdown;
     }
 
     void Update()
     {
-        if(_hasSpawned) { return; }
+        if(!_levelStarted) { return; }
         if(_levelCleared) { return; }
 
         _timer += Time.deltaTime;
+
         if(_gameUI)
         {
             _gameUI.TimerText.text = "SNACK-OPEDE " + (_spawnDelay - _timer).ToString("000");
@@ -50,9 +53,16 @@ public class CentipedeSpawner : MonoBehaviour
             {
                 _gameUI.TimerText.text = "SNACK-OPEDE 000";
             }
-            _hasSpawned = true;
             SpawnCentipede();
+            _spawnDelay += _spawnDelayIncrease;
+            _timer = 0;
+            _totalSegments++;
         }
+    }
+
+    void StartCountDown()
+    {
+        _levelStarted = true;
     }
 
     void StopCountdown()

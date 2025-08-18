@@ -10,13 +10,15 @@ public class Player : MonoBehaviour
     [SerializeField] Ball _ballPrefab;
     [SerializeField] Transform _ballSpawnPoint;
     [SerializeField] SpriteRenderer _spriteRenderer;
+    [SerializeField] float _spriteFlashRate = 0.45f;
+    float _flashTimer;
 
     Vector2 _direction = Vector2.right;
     Vector2 _spawnPosition = new();
     Rigidbody2D _rigidbody2D;
     Ball _activeBall;
     Animator _animator;
-    bool _levelOver;
+    bool _levelStarted, _levelOver;
 
     static readonly int WALK_HASH = Animator.StringToHash("Player Move");
     static readonly int IDLE_HASH = Animator.StringToHash("Player Idle");
@@ -35,12 +37,14 @@ public class Player : MonoBehaviour
 
     void OnEnable()
     {
+        LevelManager.OnLevelStarted += LevelManager_OnLevelStarted;
         LevelManager.OnLevelFailed += LevelManager_OnLevelFailed;
         LevelManager.OnLevelWon += LevelManager_OnLevelWon;
     }
 
     void OnDisable()
     {
+        LevelManager.OnLevelStarted -= LevelManager_OnLevelStarted;
         LevelManager.OnLevelFailed -= LevelManager_OnLevelFailed;
         LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
     }
@@ -48,6 +52,16 @@ public class Player : MonoBehaviour
     void Update()
     {
         if(_levelOver) { return; }
+
+        if(!_levelStarted)
+        {
+            _flashTimer += Time.deltaTime;
+            if(_flashTimer > _spriteFlashRate)
+            {
+                _spriteRenderer.enabled = !_spriteRenderer.enabled;
+                _flashTimer = 0;
+            }
+        }
 
         Vector2 previousDirection = _direction;
 
@@ -168,6 +182,12 @@ public class Player : MonoBehaviour
         {
             _rigidbody2D.position = _spawnPosition;
         }
+    }
+
+    void LevelManager_OnLevelStarted()
+    {
+        _levelStarted = true;
+        _spriteRenderer.enabled = true;
     }
 
     void LevelManager_OnLevelFailed()
