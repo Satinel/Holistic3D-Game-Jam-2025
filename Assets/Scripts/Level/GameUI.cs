@@ -11,7 +11,7 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI TimerText;
 
     [SerializeField] RectTransform _maskImage;
-    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText;
+    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText, _introText;
     [SerializeField] string _lemmingName;
     [SerializeField] string[] _gameOverMessages;
 
@@ -38,6 +38,7 @@ public class GameUI : MonoBehaviour
         LevelManager.OnLevelFailed += LevelManager_OnLevelFailed;
         LevelManager.OnLevelWon += LevelManager_OnLevelWon;
         LevelManager.OnLevelStarted += LevelManager_OnLevelStarted;
+        LevelManager.OnRestartLevel += LevelManager_OnRestartLevel;
         ScoreKeeper.OnScoreDisplayed += ScoreKeeper_OnScoreDisplayed;
     }
 
@@ -50,6 +51,7 @@ public class GameUI : MonoBehaviour
         LevelManager.OnLevelFailed -= LevelManager_OnLevelFailed;
         LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
         LevelManager.OnLevelStarted -= LevelManager_OnLevelStarted;
+        LevelManager.OnRestartLevel -= LevelManager_OnRestartLevel;
         ScoreKeeper.OnScoreDisplayed -= ScoreKeeper_OnScoreDisplayed;
     }
 
@@ -102,6 +104,11 @@ public class GameUI : MonoBehaviour
         _readyText.enabled = false;
     }
 
+    void LevelManager_OnRestartLevel()
+    {
+        StartCoroutine(TransitionOut());
+    }
+
     void ScoreKeeper_OnScoreDisplayed(int score)
     {
         _gameOverText.enabled = false;
@@ -111,12 +118,13 @@ public class GameUI : MonoBehaviour
         StartCoroutine(TransitionOut());
     }
 
-    IEnumerator TransitionOut()
+    IEnumerator TransitionOut() // Yes I could make a single coroutine inputting startsize and targetsize but this is FINE for a game jam
     {
+        _maskImage.gameObject.SetActive(true);
         Vector2 startSize = _maskImage.sizeDelta;
         Vector2 targetSize = Vector2.zero;
         float elapsedTime = 0;
-        float lerpDuration = 5f;
+        float lerpDuration = 3.25f;
 
         while(elapsedTime < lerpDuration)
         {
@@ -134,7 +142,7 @@ public class GameUI : MonoBehaviour
     IEnumerator TransitionIn()
     {
         Vector2 startSize = _maskImage.sizeDelta;
-        Vector2 targetSize = new(6400, 6400);
+        Vector2 targetSize = new(2200, 2200);
         float elapsedTime = 0;
         float lerpDuration = 3.25f;
 
@@ -147,8 +155,9 @@ public class GameUI : MonoBehaviour
         }
 
         _maskImage.sizeDelta = targetSize;
-
+        _maskImage.gameObject.SetActive(false);
+        _introText.enabled = false;
         OnTransitionInComplete?.Invoke();
-        _readyText.enabled = false;
+        _readyText.enabled = true;
     }
 }

@@ -8,8 +8,9 @@ public class LevelManager : MonoBehaviour
     public static event Action OnLevelWon;
     public static event Action OnLevelFailed;
     public static event Action OnNextLevel;
+    public static event Action OnRestartLevel;
 
-    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed;
+    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed, _restarting;
     int _activeLemmings, _savedLemmings;
 
     void OnEnable()
@@ -59,9 +60,12 @@ public class LevelManager : MonoBehaviour
 
         if(_playerIsDead || _levelFailed)
         {
+            if(_restarting) { return; }
+
             if(Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                _restarting = true;
+                OnRestartLevel?.Invoke();
             }
 
             return;
@@ -124,6 +128,12 @@ public class LevelManager : MonoBehaviour
 
     void GameUI_OnTransitionOutComplete()
     {
+        if(_restarting)
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            return;
+        }
+
         int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
         if(SceneManager.sceneCount > nextScene)
         {
