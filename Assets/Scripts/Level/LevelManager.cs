@@ -7,33 +7,38 @@ public class LevelManager : MonoBehaviour
     public static event Action OnLevelStarted;
     public static event Action OnLevelWon;
     public static event Action OnLevelFailed;
+    public static event Action OnNextLevel;
 
     bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed;
     int _activeLemmings, _savedLemmings;
 
     void OnEnable()
     {
-        SceneManager.sceneLoaded += SceneManager_SceneLoaded;
+        GameUI.OnTransitionInComplete += GameUI_OnTransitionInComplete;
         Player.OnPlayerKilled += Player_OnPlayerKilled;
         LemmingSpawner.OnAllLemmingsSpawned += LemmingSpawner_OnAllLemmingsSpawned;
         Lemming.OnAnyLemmingSpawned += Lemming_OnAnyLemmingSpawned;
         Lemming.OnAnyLemmingKilled += Lemming_OnAnyLemmingKilled;
         Lemming.OnAnyLemmingEscaped += Lemming_OnAnyLemmingEscaped;
+        GameUI.OnTransitionOutComplete += GameUI_OnTransitionOutComplete;
     }
 
     void OnDisable()
     {
-        SceneManager.sceneLoaded -= SceneManager_SceneLoaded;
+        GameUI.OnTransitionInComplete -= GameUI_OnTransitionInComplete;
         Player.OnPlayerKilled -= Player_OnPlayerKilled;
         LemmingSpawner.OnAllLemmingsSpawned -= LemmingSpawner_OnAllLemmingsSpawned;
         Lemming.OnAnyLemmingSpawned -= Lemming_OnAnyLemmingSpawned;
         Lemming.OnAnyLemmingKilled -= Lemming_OnAnyLemmingKilled;
         Lemming.OnAnyLemmingEscaped -= Lemming_OnAnyLemmingEscaped;
+        GameUI.OnTransitionOutComplete -= GameUI_OnTransitionOutComplete;
     }
 
     void Update()
     {
-        if(!_sceneStarted && _sceneIsLoaded)
+        if(!_sceneIsLoaded) { return; }
+
+        if(!_sceneStarted)
         {
             if(Input.anyKeyDown)
             {
@@ -46,7 +51,7 @@ public class LevelManager : MonoBehaviour
         {
             if(Input.anyKeyDown)
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                OnNextLevel?.Invoke();
             }
 
             return;
@@ -63,7 +68,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
+    void GameUI_OnTransitionInComplete()
     {
         _sceneIsLoaded = true;
     }
@@ -100,6 +105,8 @@ public class LevelManager : MonoBehaviour
 
     void CheckForLevelComplete()
     {
+        if(_playerIsDead) { return; }
+
         if(_allLemmingsSpawned && _activeLemmings <= 0)
         {
             if(_savedLemmings > 0)
@@ -112,6 +119,19 @@ public class LevelManager : MonoBehaviour
                 _levelFailed = true;
                 OnLevelFailed?.Invoke();
             }
+        }
+    }
+
+    void GameUI_OnTransitionOutComplete()
+    {
+        int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
+        if(SceneManager.sceneCount > nextScene)
+        {
+            SceneManager.LoadScene(nextScene);
+        }
+        else
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }

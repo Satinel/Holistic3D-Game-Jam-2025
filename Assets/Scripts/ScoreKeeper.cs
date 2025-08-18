@@ -1,7 +1,10 @@
 using UnityEngine;
+using System;
 
 public class ScoreKeeper : MonoBehaviour
 {
+    public static event Action<int> OnScoreDisplayed;
+
     public int Score { get; private set; }
 
     [SerializeField] int _escapeValue = 1500;
@@ -20,6 +23,7 @@ public class ScoreKeeper : MonoBehaviour
         Collectable.OnGetCollectable += Collectable_OnGetCollectable;
         EnemyHealth.OnAnyEnemyDestroyed += EnemyHealth_OnAnyEnemyDestroyed;
         Lemming.OnAnyLemmingEscaped += Lemming_OnAnyLemmingEscaped;
+        LevelManager.OnNextLevel += LevelManager_OnNextLevel;
     }
 
     void OnDisable()
@@ -27,6 +31,7 @@ public class ScoreKeeper : MonoBehaviour
         Collectable.OnGetCollectable -= Collectable_OnGetCollectable;
         EnemyHealth.OnAnyEnemyDestroyed -= EnemyHealth_OnAnyEnemyDestroyed;
         Lemming.OnAnyLemmingEscaped -= Lemming_OnAnyLemmingEscaped;
+        LevelManager.OnNextLevel -= LevelManager_OnNextLevel;
     }
 
     void Collectable_OnGetCollectable(Vector2 position, int value)
@@ -45,6 +50,11 @@ public class ScoreKeeper : MonoBehaviour
     {
         _levelScore += _escapeValue;
         CreateFloatingText(_lemmingGoal.ScorePositon.position, _escapeValue);
+    }
+    void LevelManager_OnNextLevel()
+    {
+        AddLevelScoreToTotal();
+        OnScoreDisplayed?.Invoke(Score);
     }
 
     void AddLevelScoreToTotal() // TODO When level successfully completed or Game Over

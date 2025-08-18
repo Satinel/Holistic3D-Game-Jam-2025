@@ -61,17 +61,19 @@ public class Player : MonoBehaviour
                 _spriteRenderer.enabled = !_spriteRenderer.enabled;
                 _flashTimer = 0;
             }
+
+            return;
         }
 
         Vector2 previousDirection = _direction;
 
         _direction = Vector2.zero;
 
-        if(Input.GetKey(KeyCode.W))
+        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
         {
             _direction.y = 1;
         }
-        if(Input.GetKey(KeyCode.S))
+        if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
         {
             if(_direction.y == 1)
             {
@@ -82,11 +84,11 @@ public class Player : MonoBehaviour
                 _direction.y = -1;
             }
         }
-        if(Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
         {
             _direction.x = 1;
         }
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
         {
             if(_direction.x == 1)
             {
@@ -116,7 +118,7 @@ public class Player : MonoBehaviour
         SetBallSpawnPosition();
         _spriteRenderer.flipY = (_direction.x < 0) || (_direction.x == 0 && _spriteRenderer.flipY);
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if(!_activeBall)
             {
