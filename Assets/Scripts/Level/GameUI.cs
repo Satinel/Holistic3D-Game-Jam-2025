@@ -11,7 +11,7 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI TimerText;
 
     [SerializeField] RectTransform _maskImage;
-    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText, _introText;
+    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText, _introText, _currentScoreText;
     [SerializeField] string _lemmingName;
     [SerializeField] string[] _gameOverMessages;
 
@@ -109,11 +109,11 @@ public class GameUI : MonoBehaviour
         StartCoroutine(TransitionOut());
     }
 
-    void ScoreKeeper_OnScoreDisplayed(int score)
+    void ScoreKeeper_OnScoreDisplayed(int score, int totalSaves)
     {
         _gameOverText.enabled = false;
         _restartText.enabled = false;
-        _totalScoreText.text = "SCORE - " + score.ToString("0000000");
+        _totalScoreText.text = $"SCORE - {score:0000000}\nTOTAL {_lemmingName} SAVED - {totalSaves:000}";
         _totalScoreText.enabled = true;
         StartCoroutine(TransitionOut());
     }
@@ -159,5 +159,10 @@ public class GameUI : MonoBehaviour
         _introText.enabled = false;
         OnTransitionInComplete?.Invoke();
         _readyText.enabled = true;
+    }
+
+    public void SetTotalScore(int score)
+    {
+        _currentScoreText.text = $"SCORE - {score:0000000}";
     }
 }

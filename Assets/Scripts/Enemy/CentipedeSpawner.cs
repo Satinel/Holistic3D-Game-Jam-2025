@@ -6,6 +6,7 @@ public class CentipedeSpawner : MonoBehaviour
     [SerializeField] int _totalSegments;
     [SerializeField] Centipede _centipedePrefab;
     [SerializeField] float _spawnDelay = 60f, _spawnDelayIncrease = 30f;
+    [SerializeField] Color _warningColor = Color.red;
 
     Player _player;
     WaypointManager _waypointManager;
@@ -13,6 +14,7 @@ public class CentipedeSpawner : MonoBehaviour
     float _timer = 0;
     bool _levelStarted = false, _levelCleared = false;
     GameUI _gameUI;
+    Color _defaultColor;
 
 
     void Awake()
@@ -20,6 +22,10 @@ public class CentipedeSpawner : MonoBehaviour
         _player = FindFirstObjectByType<Player>();
         _waypointManager = FindFirstObjectByType<WaypointManager>();
         _gameUI = FindFirstObjectByType<GameUI>();
+        if(_gameUI)
+        {
+            _defaultColor = _gameUI.TimerText.color;
+        }
     }
 
     void OnEnable()
@@ -27,6 +33,7 @@ public class CentipedeSpawner : MonoBehaviour
         LevelManager.OnLevelStarted += StartCountDown;
         LevelManager.OnLevelFailed += StopCountdown;
         LevelManager.OnLevelWon += StopCountdown;
+        Player.OnPlayerKilled += StopCountdown;
     }
 
     void OnDisable()
@@ -34,6 +41,7 @@ public class CentipedeSpawner : MonoBehaviour
         LevelManager.OnLevelStarted -= StartCountDown;
         LevelManager.OnLevelFailed -= StopCountdown;
         LevelManager.OnLevelWon -= StopCountdown;
+        Player.OnPlayerKilled -= StopCountdown;
     }
 
     void Update()
@@ -46,12 +54,17 @@ public class CentipedeSpawner : MonoBehaviour
         if(_gameUI)
         {
             _gameUI.TimerText.text = "SNACK-OPEDE " + (_spawnDelay - _timer).ToString("000");
+            if(_spawnDelay - _timer <= 10)
+            {
+                _gameUI.TimerText.color = _warningColor;
+            }
         }
         if(_timer >= _spawnDelay)
         {
             if(_gameUI)
             {
                 _gameUI.TimerText.text = "SNACK-OPEDE 000";
+                _gameUI.TimerText.color = _defaultColor;
             }
             SpawnCentipede();
             _spawnDelay += _spawnDelayIncrease;

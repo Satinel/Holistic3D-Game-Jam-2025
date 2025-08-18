@@ -141,6 +141,13 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
+            ScoreKeeper scoreKeeper = FindFirstObjectByType<ScoreKeeper>();
+
+            if(scoreKeeper)
+            {
+                scoreKeeper.transform.parent = transform;
+            }
+
             SceneManager.LoadScene(0);
         }
     }
