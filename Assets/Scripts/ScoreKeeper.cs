@@ -66,6 +66,10 @@ public class ScoreKeeper : MonoBehaviour
     {
         _currentSavedLemmings++;
         _levelScore += _escapeValue;
+        if(!_lemmingGoal)
+        {
+            _lemmingGoal = FindFirstObjectByType<LemmingGoal>();
+        }
         CreateFloatingText(_lemmingGoal.ScorePositon.position, _escapeValue);
         UpdateCurrentScore(_totalScore + _levelScore);
     }

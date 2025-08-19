@@ -77,12 +77,19 @@ public class Ball : MonoBehaviour
         if(enemyHealth)
         {
             enemyHealth.TakeDamage(_damage);
+            return;
         }
 
         collision.gameObject.TryGetComponent(out Obstacle obstacle);
         if(obstacle)
         {
             obstacle.TakeDamage(_damage);
+            return;
+        }
+
+        if(collision.gameObject.CompareTag("Rubble"))
+        {
+            Destroy(collision.gameObject);
         }
 
     }

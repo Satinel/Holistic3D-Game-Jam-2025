@@ -190,6 +190,10 @@ public class Player : MonoBehaviour
     {
         _levelStarted = true;
         _spriteRenderer.enabled = true;
+        if(_direction != Vector2.zero)
+        {
+            _animator.Play(WALK_HASH);
+        }
     }
 
     void LevelManager_OnLevelFailed()

@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Dirt
   - Ball
+  - Rubble
   layers:
   - Default
   - TransparentFX
