@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d28b95f58ba84c34a9439023472c4e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <ScoreValue>k__BackingField: 25
+  <ScoreValue>k__BackingField: 75
   _maxHealth: 1
 --- !u!1 &4895173652785790545
 GameObject:
