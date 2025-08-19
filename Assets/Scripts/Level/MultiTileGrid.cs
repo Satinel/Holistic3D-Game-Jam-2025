@@ -35,9 +35,9 @@ public class MultiTileGrid : MonoBehaviour
         tileRenderer.color = row switch
         {
             < 8 => _colors[0],
-            < 20 => _colors[1],
-            < 30 => _colors[2],
-            < 42 => _colors[3],
+            < 19 => _colors[1],
+            < 28 => _colors[2],
+            < 43 => _colors[3],
             < 50 => _colors[4],
             < 64 => _colors[5],
             _ => _colors[5],
