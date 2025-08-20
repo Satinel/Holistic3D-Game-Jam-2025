@@ -94,7 +94,7 @@ public class GameUI : MonoBehaviour
     void LevelManager_OnLevelWon()
     {
         _gameOverText.text = "SUCCESS!";
-        _restartText.text = "PRESS ANY KEY";
+        _restartText.text = "PRESS N FOR NEXT LEVEL\nPRESS R TO RETRY";
         _gameOverText.enabled = true;
         _restartText.enabled = true;
     }

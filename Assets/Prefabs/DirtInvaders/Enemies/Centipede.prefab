@@ -149,6 +149,7 @@ MonoBehaviour:
   _obstaclePrefab: {fileID: 4274688033422964287, guid: baa48571b282ce6478212179ce75b490, type: 3}
   _spawnPoint: {fileID: 7454050532925147259}
   _followerColor: {r: 1, g: 0.8627451, b: 0, a: 1}
+  _followerColor2: {r: 0.56116897, g: 0.8490566, b: 0.06808474, a: 1}
   _headColor: {r: 0.8862745, g: 0, b: 0, a: 1}
   _spriteRenderer: {fileID: 4060964450704459451}
 --- !u!114 &-586833526176411328

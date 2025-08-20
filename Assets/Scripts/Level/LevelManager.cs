@@ -10,7 +10,7 @@ public class LevelManager : MonoBehaviour
     public static event Action OnNextLevel;
     public static event Action OnRestartLevel;
 
-    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed, _restarting;
+    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed, _restarting, _inTransition;
     int _activeLemmings, _savedLemmings;
 
     void OnEnable()
@@ -37,7 +37,7 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        if(!_sceneIsLoaded) { return; }
+        if(!_sceneIsLoaded || _inTransition) { return; }
 
         if(!_sceneStarted)
         {
@@ -50,11 +50,17 @@ public class LevelManager : MonoBehaviour
 
         if(_levelComplete)
         {
-            if(Input.anyKeyDown)
+            if(Input.GetKeyDown(KeyCode.N))
             {
+                _inTransition = true;
                 OnNextLevel?.Invoke();
             }
-
+            if(Input.GetKeyDown(KeyCode.R))
+            {
+                _inTransition = true;
+                _restarting = true;
+                OnRestartLevel?.Invoke();
+            }
             return;
         }
 
@@ -64,6 +70,7 @@ public class LevelManager : MonoBehaviour
 
             if(Input.GetKeyDown(KeyCode.R))
             {
+                _inTransition = true;
                 _restarting = true;
                 OnRestartLevel?.Invoke();
             }
