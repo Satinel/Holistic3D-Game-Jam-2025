@@ -12,7 +12,7 @@ public class Centipede : MonoBehaviour
 
     [SerializeField] Obstacle _obstaclePrefab;
     [SerializeField] Transform _spawnPoint;
-    [SerializeField] Color _followerColor = Color.yellow, _headColor = Color.red;
+    [SerializeField] Color _followerColor = Color.yellow, _followerColor2 = Color.green, _headColor = Color.red;
     [SerializeField] SpriteRenderer _spriteRenderer;
     EnemyHealth _leader;
     Centipede _centipedePrefab;
@@ -51,7 +51,6 @@ public class Centipede : MonoBehaviour
         LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
     }
 
-    
     void Update()
     {
         if(_levelOver || _player.enabled == false)
@@ -73,7 +72,6 @@ public class Centipede : MonoBehaviour
                 _currentTarget = _player.transform;
             }
         }
-
 
         transform.right = _currentTarget.position - transform.position;
 
@@ -163,13 +161,14 @@ public class Centipede : MonoBehaviour
     {
         _follower = follower;
         _follower.transform.position = _spawnPoint.position;
-        _follower.GetComponentInChildren<SpriteRenderer>().color = _followerColor;
         if(_isEvenSegment)
         {
+            _follower.GetComponentInChildren<SpriteRenderer>().color = _followerColor2;
             _follower.GetComponentInChildren<Animator>().Play(SEGMENT_WALK, 0, 0.5f);
         }
         else
         {
+            _follower.GetComponentInChildren<SpriteRenderer>().color = _followerColor;
             _follower.GetComponentInChildren<Animator>().Play(SEGMENT_WALK, 0, 0f);
         }
     }
