@@ -1524,7 +1524,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<size=125%>READY</size>
+  m_text: '<size=50%>READY</size>
 
     <size=25%>MOVE - WASD or Arrow Keys
 

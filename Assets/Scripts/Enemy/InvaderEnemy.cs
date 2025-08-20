@@ -3,7 +3,7 @@ using UnityEngine;
 public class InvaderEnemy : MonoBehaviour
 {
     [SerializeField] float _moveSpeed = 1.5f;
-    [SerializeField] float _speedIncrease = 0.25f;
+    [SerializeField] float _speedIncrease = 0.25f, _maxSpeed = 10f;
     [SerializeField] float _rowDistance = 0.5f;
     [SerializeField] float _minX, _maxX, _minY, _maxY;
     [SerializeField] float _shotMin = 1.25f, _shotMax = 3.75f;
@@ -71,6 +71,10 @@ public class InvaderEnemy : MonoBehaviour
     {
         transform.right = -transform.right;
         _moveSpeed += _speedIncrease;
+        if(_moveSpeed > _maxSpeed)
+        {
+            _moveSpeed = _maxSpeed;
+        }
 
         _rigidbody2D.MovePosition(new(_rigidbody2D.position.x, _rigidbody2D.position.y + (_rowDistance * _verticalDirection)));
         
