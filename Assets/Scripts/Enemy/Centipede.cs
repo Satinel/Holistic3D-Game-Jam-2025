@@ -147,6 +147,7 @@ public class Centipede : MonoBehaviour
         _spriteRenderer.color = _headColor;
         _spriteRenderer.sortingOrder = 2;
         _spriteRenderer.enabled = true;
+        GetComponent<Collider2D>().enabled = true;
         GetComponentInChildren<Animator>().SetBool("IsHead", _isHead);
         int layerIdentifier = LayerMask.NameToLayer(LEMMING_KILLER_LAYER);
         gameObject.layer = layerIdentifier;
@@ -201,6 +202,7 @@ public class Centipede : MonoBehaviour
         if(_follower)
         {
             _follower.GetComponentInChildren<SpriteRenderer>().enabled = _spriteRenderer.enabled;
+            _follower.GetComponent<Collider2D>().enabled = true;
         }
     }
 
