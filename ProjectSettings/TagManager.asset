@@ -58,6 +58,9 @@ TagManager:
   - name: Friends
     uniqueID: 2557248661
     locked: 0
+  - name: UI
+    uniqueID: 4120601445
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

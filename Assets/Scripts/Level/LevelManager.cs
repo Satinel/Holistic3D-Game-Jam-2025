@@ -142,7 +142,8 @@ public class LevelManager : MonoBehaviour
         }
 
         int nextScene = SceneManager.GetActiveScene().buildIndex + 1;
-        if(SceneManager.sceneCount > nextScene)
+
+        if(SceneManager.sceneCountInBuildSettings > nextScene)
         {
             SceneManager.LoadScene(nextScene);
         }
