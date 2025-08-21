@@ -21,7 +21,7 @@ public class Ball : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _rainbowCycle = GetComponent<RainbowCycle>();
-        _material = GetComponent<MeshRenderer>().material;
+        _material = GetComponent<SpriteRenderer>().material;
     }
 
     void OnEnable()

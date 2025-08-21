@@ -7,7 +7,7 @@ public class Ghost : MonoBehaviour
     [SerializeField] Vector3[] _wayPoints;
     [SerializeField] SpriteRenderer _spriteRenderer;
 
-    bool _shouldMove;
+    [SerializeField] bool _shouldMove;
     int _currentWaypointIndex, _nextWaypointIndex;
 
     void OnEnable()
@@ -39,7 +39,7 @@ public class Ghost : MonoBehaviour
             _nextWaypointIndex = (_nextWaypointIndex + 1) % _wayPoints.Length;
 
             transform.right = _wayPoints[_currentWaypointIndex] - transform.position;
-            // _spriteRenderer.flipX = Vector3.Dot(transform.right, Vector3.right) > 0;
+
             _spriteRenderer.flipY = Vector3.Dot(transform.up, Vector3.up) < 0; // Vector3.Dot is reportedly faster than Vector3.Angle
         }
     }
@@ -60,6 +60,11 @@ public class Ghost : MonoBehaviour
     void StopMoving()
     {
         _shouldMove = false;
-        _rigidbody2D.linearVelocityX = 0;
+        _rigidbody2D.linearVelocity = Vector2.zero;
+    }
+
+    public void IncreaseMoveSpeed(float amount)
+    {
+        _moveSpeed += amount;
     }
 }
