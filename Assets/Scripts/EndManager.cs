@@ -58,10 +58,12 @@ public class EndManager : MonoBehaviour
         {
             RestartGame();
         }
+#if !UNITY_WEBGL
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
+#endif
     }
 
     void SetReady()

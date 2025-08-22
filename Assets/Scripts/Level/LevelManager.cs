@@ -59,10 +59,12 @@ public class LevelManager : MonoBehaviour
                 OnRestartLevel?.Invoke();
                 return;            
             }
+#if !UNITY_WEBGL
             if(Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.Quit();
             }
+#endif
         }
 
         if(_levelComplete)

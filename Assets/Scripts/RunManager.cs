@@ -29,10 +29,12 @@ public class RunManager : MonoBehaviour
             }
             return;
         }
+#if !UNITY_WEBGL
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
+#endif
         if(Input.anyKeyDown)
         {
             StartGame();
