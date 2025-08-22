@@ -32,8 +32,10 @@ public class Ghost : MonoBehaviour
 
         _rigidbody2D.linearVelocity = transform.right * _moveSpeed;
 
+        Vector2 waypointDirection = (_wayPoints[_currentWaypointIndex] - transform.position).normalized;
+        Vector2 movementDirection = _rigidbody2D.linearVelocity.normalized;
 
-        if(Vector2.Distance(transform.position, _wayPoints[_currentWaypointIndex]) <= _minDistance)
+        if(Vector2.Distance(transform.position, _wayPoints[_currentWaypointIndex]) <= _minDistance || Vector2.Dot(waypointDirection, movementDirection) < 0)
         {
             _currentWaypointIndex = _nextWaypointIndex;
             _nextWaypointIndex = (_nextWaypointIndex + 1) % _wayPoints.Length;

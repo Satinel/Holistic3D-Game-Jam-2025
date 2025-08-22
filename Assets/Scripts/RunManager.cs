@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 public class RunManager : MonoBehaviour
 {
     [SerializeField] GameObject _pressKeyPrompt;
-    float _delay = 5f;
+    [SerializeField] float _delay = 5f;
     bool _gameStarted, _ready;
 
     float _timer;

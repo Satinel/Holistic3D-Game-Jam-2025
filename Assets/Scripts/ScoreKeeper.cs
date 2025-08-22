@@ -8,6 +8,9 @@ public class ScoreKeeper : MonoBehaviour
 
     int _totalScore, _totalSavedLemmings;
 
+    public int TotalScore => _totalScore;
+    public int TotalSaved => _totalSavedLemmings;
+
     [SerializeField] int _escapeValue = 1500;
     [SerializeField] FloatingScore _floatingScorePrefab;
 
@@ -28,6 +31,7 @@ public class ScoreKeeper : MonoBehaviour
         EnemyHealth.OnAnyEnemyDestroyed += EnemyHealth_OnAnyEnemyDestroyed;
         Lemming.OnAnyLemmingEscaped += Lemming_OnAnyLemmingEscaped;
         LevelManager.OnNextLevel += LevelManager_OnNextLevel;
+        EndManager.OnRestart += EndManager_OnRestart;
     }
 
     void OnDisable()
@@ -37,6 +41,7 @@ public class ScoreKeeper : MonoBehaviour
         EnemyHealth.OnAnyEnemyDestroyed -= EnemyHealth_OnAnyEnemyDestroyed;
         Lemming.OnAnyLemmingEscaped -= Lemming_OnAnyLemmingEscaped;
         LevelManager.OnNextLevel -= LevelManager_OnNextLevel;
+        EndManager.OnRestart -= EndManager_OnRestart;
     }
 
     void SceneManager_SceneLoaded(Scene scene, LoadSceneMode mode)
@@ -78,6 +83,12 @@ public class ScoreKeeper : MonoBehaviour
     {
         AddLevelScoreToTotal();
         OnScoreDisplayed?.Invoke(_totalScore, _totalSavedLemmings);
+    }
+
+    void EndManager_OnRestart()
+    {
+        _totalScore = 0;
+        _totalSavedLemmings = 0;
     }
 
     void AddLevelScoreToTotal() // TODO When level successfully completed or Game Over
