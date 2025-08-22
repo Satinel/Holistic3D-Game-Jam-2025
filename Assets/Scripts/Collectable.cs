@@ -9,7 +9,7 @@ public class Collectable : MonoBehaviour
 
     void GetCollectable()
     {
-        OnGetCollectable?.Invoke(transform.position, _scoreValue); // TODO Play sound and have a scorekeeper to actually track getting this
+        OnGetCollectable?.Invoke(transform.position, _scoreValue); // TODO Play sound
         gameObject.SetActive(false);
     }
 

@@ -33,7 +33,7 @@ public class Lemming : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _previousPosition = transform.position;
-        OnAnyLemmingSpawned?.Invoke(); // TODO Update UI displaying active lemmings probably!
+        OnAnyLemmingSpawned?.Invoke();
     }
 
     void Start()
@@ -54,7 +54,6 @@ public class Lemming : MonoBehaviour
             }
         }
         if(_isFalling) { return; }
-        // DrawBox(transform.position + transform.right.normalized * _castCheckDistance, _boxSize, transform.rotation.z, Color.magenta);
 
         _blockedTimer += Time.deltaTime;
         if(_blockedTimer >= _blockedCheckDelay)
@@ -134,30 +133,13 @@ public class Lemming : MonoBehaviour
 
     public void Rescue()
     {
-        OnAnyLemmingEscaped?.Invoke(); // TODO Increase score, check if all Lemmings accounted for, play sfx/vfx, etc.
+        OnAnyLemmingEscaped?.Invoke(); // TODO Play sfx/vfx
         Destroy(gameObject);
     }
 
     public void Kill()
     {
-        OnAnyLemmingKilled?.Invoke(); // TODO Update UI displaying number of active/remaining Lemmings (assuming such a thing ever exists) and check if all Lemmings accounted for
+        OnAnyLemmingKilled?.Invoke();
         Destroy(gameObject);
     }
-
-    // void DrawBox(Vector3 center, Vector2 size, float angle, Color color)
-    // {
-    //     Vector2 halfSize = size / 2f;
-    //     Quaternion rotation = Quaternion.Euler(0, 0, angle);
-
-    //     Vector2[] corners = new Vector2[4];
-    //     corners[0] = (Vector3)center + rotation * new Vector2(-halfSize.x, -halfSize.y); // Bottom Left
-    //     corners[1] = (Vector3)center + rotation * new Vector2(-halfSize.x, halfSize.y);  // Top Left
-    //     corners[2] = (Vector3)center + rotation * new Vector2(halfSize.x, halfSize.y);   // Top Right
-    //     corners[3] = (Vector3)center + rotation * new Vector2(halfSize.x, -halfSize.y);  // Bottom Right
-
-    //     Debug.DrawLine(corners[0], corners[1], color);
-    //     Debug.DrawLine(corners[1], corners[2], color);
-    //     Debug.DrawLine(corners[2], corners[3], color);
-    //     Debug.DrawLine(corners[3], corners[0], color);
-    // }
 }

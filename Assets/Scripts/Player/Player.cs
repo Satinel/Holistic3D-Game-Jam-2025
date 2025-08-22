@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             OnPlayerKilled?.Invoke();
-            gameObject.SetActive(false); // TODO Handle player death better and respawn the player and so on
+            gameObject.SetActive(false); // TODO Handle player death better ie. a pause + SFX (VFX??)
             enabled = false;
         }
     }

@@ -91,7 +91,7 @@ public class ScoreKeeper : MonoBehaviour
         _totalSavedLemmings = 0;
     }
 
-    void AddLevelScoreToTotal() // TODO When level successfully completed or Game Over
+    void AddLevelScoreToTotal()
     {
         _totalScore += _levelScore;
         _totalSavedLemmings += _currentSavedLemmings;

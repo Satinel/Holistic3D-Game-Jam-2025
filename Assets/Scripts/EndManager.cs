@@ -10,10 +10,13 @@ public class EndManager : MonoBehaviour
     [SerializeField] GameObject _pressKeyPrompt;
     [SerializeField] float _delay = 30f;
     [SerializeField] TextMeshProUGUI _scoreText, _savedText;
+    [SerializeField] GameObject[] _savedPemmings;
 
     ScoreKeeper _scoreKeeper;
     bool _gameStarted, _ready;
     float _timer;
+
+    static readonly int JUMP_HASH = Animator.StringToHash("Jump");
 
     void Awake()
     {
@@ -26,6 +29,11 @@ public class EndManager : MonoBehaviour
         {
             _scoreText.text = $"FINAL SCORE - {_scoreKeeper.TotalScore:0000000}";
             _savedText.text = $"PEMMINGS SAVED - {_scoreKeeper.TotalSaved:000}";
+        }
+
+        foreach(GameObject pemming in _savedPemmings)
+        {
+            pemming.GetComponent<Animator>().Play(JUMP_HASH, 0, UnityEngine.Random.Range(0f, 0.9f));
         }
     }
 
