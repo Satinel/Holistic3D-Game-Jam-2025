@@ -29,6 +29,10 @@ public class RunManager : MonoBehaviour
             }
             return;
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
         if(Input.anyKeyDown)
         {
             StartGame();

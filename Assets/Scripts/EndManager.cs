@@ -56,7 +56,11 @@ public class EndManager : MonoBehaviour
         }
         if(Input.GetButtonDown("Fire1"))
         {
-            StartGame();
+            RestartGame();
+        }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 
@@ -66,7 +70,7 @@ public class EndManager : MonoBehaviour
         _pressKeyPrompt.SetActive(true);
     }
 
-    public void StartGame()
+    public void RestartGame()
     {
         if(_gameStarted) { return; }
 
