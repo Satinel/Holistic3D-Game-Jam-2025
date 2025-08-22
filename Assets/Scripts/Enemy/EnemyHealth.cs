@@ -28,7 +28,7 @@ public class EnemyHealth : MonoBehaviour
     {
         OnAnyEnemyDestroyed?.Invoke(this);
 
-        gameObject.SetActive(false); // TODO At least play a sound or something! Add to score and so on
+        gameObject.SetActive(false);
     }
 
     public void ChangeScoreValue(int amount)

@@ -133,7 +133,7 @@ public class Lemming : MonoBehaviour
 
     public void Rescue()
     {
-        OnAnyLemmingEscaped?.Invoke(); // TODO Play sfx/vfx
+        OnAnyLemmingEscaped?.Invoke();
         Destroy(gameObject);
     }
 

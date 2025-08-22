@@ -11,7 +11,7 @@ public class GameUI : MonoBehaviour
     public TextMeshProUGUI TimerText;
 
     [SerializeField] RectTransform _maskImage;
-    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText, _introText, _currentScoreText;
+    [SerializeField] TextMeshProUGUI _gameOverText, _restartText, _lemmingTotalText, _lemmingKilledText, _lemmingEscapedText, _readyText, _totalScoreText, _introText, _currentScoreText, _pauseText;
     [SerializeField] string _lemmingName;
     [SerializeField] string[] _gameOverMessages;
 
@@ -39,6 +39,8 @@ public class GameUI : MonoBehaviour
         LevelManager.OnLevelWon += LevelManager_OnLevelWon;
         LevelManager.OnLevelStarted += LevelManager_OnLevelStarted;
         LevelManager.OnRestartLevel += LevelManager_OnRestartLevel;
+        LevelManager.OnGamePaused += LevelManager_OnGamePaused;
+        LevelManager.OnGameUnpaused += LevelManager_OnGameUnpaused;
         ScoreKeeper.OnScoreDisplayed += ScoreKeeper_OnScoreDisplayed;
     }
 
@@ -52,6 +54,8 @@ public class GameUI : MonoBehaviour
         LevelManager.OnLevelWon -= LevelManager_OnLevelWon;
         LevelManager.OnLevelStarted -= LevelManager_OnLevelStarted;
         LevelManager.OnRestartLevel -= LevelManager_OnRestartLevel;
+        LevelManager.OnGamePaused -= LevelManager_OnGamePaused;
+        LevelManager.OnGameUnpaused -= LevelManager_OnGameUnpaused;
         ScoreKeeper.OnScoreDisplayed -= ScoreKeeper_OnScoreDisplayed;
     }
 
@@ -109,6 +113,16 @@ public class GameUI : MonoBehaviour
         StartCoroutine(TransitionOut());
     }
 
+    void LevelManager_OnGamePaused()
+    {
+        _pauseText.enabled = true;
+    }
+
+    void LevelManager_OnGameUnpaused()
+    {
+        _pauseText.enabled = false;
+    }
+
     void ScoreKeeper_OnScoreDisplayed(int score, int totalSaves)
     {
         _gameOverText.enabled = false;
@@ -128,7 +142,7 @@ public class GameUI : MonoBehaviour
 
         while(elapsedTime < lerpDuration)
         {
-            elapsedTime += Time.deltaTime;
+            elapsedTime += Time.unscaledDeltaTime;
             float t = Mathf.Clamp01(elapsedTime / lerpDuration);
             _maskImage.sizeDelta = Vector2.Lerp(startSize, targetSize, t);
             yield return null;

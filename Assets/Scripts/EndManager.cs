@@ -54,7 +54,7 @@ public class EndManager : MonoBehaviour
             }
             return;
         }
-        if(Input.GetKeyDown(KeyCode.R))
+        if(Input.GetButtonDown("Fire1"))
         {
             StartGame();
         }

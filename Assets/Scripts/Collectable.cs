@@ -9,7 +9,7 @@ public class Collectable : MonoBehaviour
 
     void GetCollectable()
     {
-        OnGetCollectable?.Invoke(transform.position, _scoreValue); // TODO Play sound
+        OnGetCollectable?.Invoke(transform.position, _scoreValue);
         gameObject.SetActive(false);
     }
 

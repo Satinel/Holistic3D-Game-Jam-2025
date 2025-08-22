@@ -14,7 +14,7 @@ public class MusicPlayer : MonoBehaviour
         LevelManager.OnRestartLevel += StopMusic;
         RunManager.OnRunStarted += StopMusic;
         EndManager.OnRestart += StopMusic;
-        Player.OnPlayerKilled += StopMusic;
+        Player.OnPlayerKilled += HandleFailure;
     }
 
     void OnDisable()

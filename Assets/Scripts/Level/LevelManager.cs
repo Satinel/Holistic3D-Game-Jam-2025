@@ -9,8 +9,10 @@ public class LevelManager : MonoBehaviour
     public static event Action OnLevelFailed;
     public static event Action OnNextLevel;
     public static event Action OnRestartLevel;
+    public static event Action OnGamePaused;
+    public static event Action OnGameUnpaused;
 
-    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed, _restarting, _inTransition;
+    bool _sceneIsLoaded, _sceneStarted, _playerIsDead, _allLemmingsSpawned, _levelComplete, _levelFailed, _restarting, _inTransition, _isPaused;
     int _activeLemmings, _savedLemmings;
 
     void OnEnable()
@@ -48,14 +50,25 @@ public class LevelManager : MonoBehaviour
             }
         }
 
+        if(_isPaused)
+        {
+            if(Input.GetButtonDown("Fire1"))
+            {
+                _inTransition = true;
+                _restarting = true;
+                OnRestartLevel?.Invoke();
+                return;            
+            }
+        }
+
         if(_levelComplete)
         {
-            if(Input.GetKeyDown(KeyCode.N))
+            if(Input.GetButtonDown("Submit"))
             {
                 _inTransition = true;
                 OnNextLevel?.Invoke();
             }
-            if(Input.GetKeyDown(KeyCode.R))
+            if(Input.GetButtonDown("Fire1"))
             {
                 _inTransition = true;
                 _restarting = true;
@@ -68,7 +81,7 @@ public class LevelManager : MonoBehaviour
         {
             if(_restarting) { return; }
 
-            if(Input.GetKeyDown(KeyCode.R))
+            if(Input.GetButtonDown("Fire1"))
             {
                 _inTransition = true;
                 _restarting = true;
@@ -76,6 +89,25 @@ public class LevelManager : MonoBehaviour
             }
 
             return;
+        }
+
+        if(Input.GetButtonDown("Cancel"))
+        {
+            if(_sceneStarted)
+            {
+                if(!_isPaused)
+                {
+                    _isPaused = true;
+                    OnGamePaused?.Invoke();
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    _isPaused = false;
+                    OnGameUnpaused?.Invoke();
+                    Time.timeScale = 1;
+                }
+            }
         }
     }
 
@@ -137,6 +169,7 @@ public class LevelManager : MonoBehaviour
     {
         if(_restarting)
         {
+            Time.timeScale = 1;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             return;
         }

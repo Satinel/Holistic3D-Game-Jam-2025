@@ -71,32 +71,39 @@ public class Player : MonoBehaviour
 
         _direction = Vector2.zero;
 
-        if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        // _direction.x = Input.GetAxis("Horizontal");
+        // _direction.y = Input.GetAxis("Vertical");
+
+        // if(Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if(Input.GetAxisRaw("Vertical") > 0)
         {
             _direction.y = 1;
         }
-        if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        // if(Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+        if(Input.GetAxisRaw("Vertical") < 0)
         {
-            if(_direction.y == 1)
-            {
-                _direction.y = 0;
-            }
-            else
+            // if(_direction.y == 1)
+            // {
+            //     _direction.y = 0;
+            // }
+            // else
             {
                 _direction.y = -1;
             }
         }
-        if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        // if(Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if(Input.GetAxisRaw("Horizontal") > 0)
         {
             _direction.x = 1;
         }
-        if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        // if(Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+        if(Input.GetAxisRaw("Horizontal") < 0)
         {
-            if(_direction.x == 1)
-            {
-                _direction.x = 0;
-            }
-            else
+            // if(_direction.x == 1)
+            // {
+            //     _direction.x = 0;
+            // }
+            // else
             {
                 _direction.x = -1;
             }
@@ -120,7 +127,7 @@ public class Player : MonoBehaviour
         SetBallSpawnPosition();
         _spriteRenderer.flipY = (_direction.x < 0) || (_direction.x == 0 && _spriteRenderer.flipY);
 
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if(Input.GetButtonDown("Jump"))
         {
             if(!_activeBall)
             {
@@ -175,7 +182,7 @@ public class Player : MonoBehaviour
         if(collision.gameObject.CompareTag("Enemy"))
         {
             OnPlayerKilled?.Invoke();
-            gameObject.SetActive(false); // TODO Handle player death better ie. a pause + SFX (VFX??)
+            gameObject.SetActive(false); // TODO Handle player death better ie. a pause (+ VFX??)
             enabled = false;
         }
     }
