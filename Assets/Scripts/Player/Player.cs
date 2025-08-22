@@ -11,8 +11,10 @@ public class Player : MonoBehaviour
     [SerializeField] Transform _ballSpawnPoint;
     [SerializeField] SpriteRenderer _spriteRenderer;
     [SerializeField] float _spriteFlashRate = 0.45f;
-    float _flashTimer;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _digSFX;
 
+    float _flashTimer;
     Vector2 _direction = Vector2.right;
     Vector2 _spawnPosition = new();
     Rigidbody2D _rigidbody2D;
@@ -165,10 +167,10 @@ public class Player : MonoBehaviour
         if(collision.gameObject.CompareTag("Dirt"))
         {
             collision.gameObject.SetActive(false);
-        }
-        if(collision.gameObject.CompareTag("Ball"))
-        {
-            Destroy(collision.gameObject);
+            if(!_audioSource.isPlaying)
+            {
+                _audioSource.Play();
+            }
         }
         if(collision.gameObject.CompareTag("Enemy"))
         {

@@ -9,13 +9,16 @@ public class Ball : MonoBehaviour
     [SerializeField] int _damage = 1;
     [SerializeField] float _moveSpeed = 10f;
     [SerializeField] bool _limitSpeed = true;
-    [SerializeField] float _lifeTime = 10f;
+    [SerializeField] float _lifeTime = 10f, _spawnBuffer = 0.25f;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] AudioClip _bounceSFX;
 
     Rigidbody2D _rigidbody2D;
     RainbowCycle _rainbowCycle;
     Material _material;
 
     bool _hasLaunched = false;
+    float _timer;
 
     void Awake()
     {
@@ -40,6 +43,7 @@ public class Ball : MonoBehaviour
 
     void Update()
     {
+        _timer += Time.deltaTime;
         _material.color = _rainbowCycle.LerpColor();
     }
 
@@ -67,6 +71,17 @@ public class Ball : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if(collision.gameObject.CompareTag("Player") && _timer > _spawnBuffer)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        if(_audioSource.enabled && !_audioSource.isPlaying)
+        {
+            _audioSource.PlayOneShot(_bounceSFX);
+        }
+
         if(_limitSpeed)
         {
             // _rigidbody2D.linearVelocity = Vector2.Reflect(_rigidbody2D.linearVelocity, collision.contacts[0].normal).normalized * _moveSpeed; // https://www.youtube.com/watch?v=Vr-ojd4Y2a4
@@ -91,7 +106,6 @@ public class Ball : MonoBehaviour
         {
             Destroy(collision.gameObject);
         }
-
     }
 
     void OnTriggerEnter2D(Collider2D collision)

@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class RunManager : MonoBehaviour
 {
+    public static event Action OnRunStarted;
+
     [SerializeField] GameObject _pressKeyPrompt;
     [SerializeField] float _delay = 5f;
     bool _gameStarted, _ready;
@@ -43,6 +46,8 @@ public class RunManager : MonoBehaviour
         if(_gameStarted) { return; }
 
         _gameStarted = true;
+
+        OnRunStarted?.Invoke();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

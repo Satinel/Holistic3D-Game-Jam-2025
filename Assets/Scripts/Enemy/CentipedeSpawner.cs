@@ -1,7 +1,9 @@
 using UnityEngine;
+using System;
 
 public class CentipedeSpawner : MonoBehaviour
 {
+    public static event Action OnCentipedeSpawned;
 
     [SerializeField] int _totalSegments;
     [SerializeField] Centipede _centipedePrefab;
@@ -103,6 +105,8 @@ public class CentipedeSpawner : MonoBehaviour
             newSegment.Setup(_centipedePrefab, _player, _waypointManager, 0, i % 2 == 0);
             _previousSegment = newSegment;
         }
+
+        OnCentipedeSpawned?.Invoke();
     }
 
     void OnTriggerExit2D(Collider2D collision)
